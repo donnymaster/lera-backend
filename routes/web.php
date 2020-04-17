@@ -11,6 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+
+Auth::routes(['verify' => true]);
+
+Route::get('/', 'UserController@index')->name('root');
+
+Route::get('/home', 'UserController@index')->name('home');
+
+Route::middleware(['auth', 'verified'])->group(function(){
+
+    Route::resource('broadcasts', 'BroadcastController');
+
 });

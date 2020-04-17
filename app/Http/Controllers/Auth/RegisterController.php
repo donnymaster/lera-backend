@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -52,7 +53,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed']
         ]);
     }
 
@@ -64,10 +65,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $avatar_url = "";
+        $default_avatar = "";
+        $is_avatar = isset($data['user-castom-img']);
+
+        if($is_avatar){
+            $avatar_url = $data['user-castom-img']->store('public/avatars');
+            dd($avatar_url);
+        }elseif(isset($data['default_image'])){
+            $default_avatar = "avatars/" . $data['default_image'] . ".png";
+        }else{
+            $default_avatar = rand(1, 10) > 5 ? "avatars/men.png" : "avatars/girl.png";
+        }
+
         return User::create([
-            'name' => $data['name'],
+            'nick' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'avatar' => $is_avatar == true ? $avatar_url : $default_avatar
         ]);
     }
 }
