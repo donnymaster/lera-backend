@@ -70,12 +70,11 @@ class RegisterController extends Controller
         $is_avatar = isset($data['user-castom-img']);
 
         if($is_avatar){
-            $avatar_url = $data['user-castom-img']->store('public/avatars');
-            dd($avatar_url);
+            $avatar_url = $data['user-castom-img']->store('storage/avatars');
         }elseif(isset($data['default_image'])){
-            $default_avatar = "avatars/" . $data['default_image'] . ".png";
+            $default_avatar = "storage/avatars/" . $data['default_image'] . ".png";
         }else{
-            $default_avatar = rand(1, 10) > 5 ? "avatars/men.png" : "avatars/girl.png";
+            $default_avatar = rand(1, 10) > 5 ? "storage/avatars/men.png" : "storage/avatars/girl.png";
         }
 
         return User::create([

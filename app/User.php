@@ -49,6 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function avatar(){
 
-        return asset('storage/' . $this->avatar);
+        return asset($this->avatar);
     }
 }

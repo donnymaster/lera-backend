@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Feedback extends Migration
+class Players extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,19 @@ class Feedback extends Migration
      */
     public function up()
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('players', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('user_name');
-            $table->string('user_email');
-            $table->longText('message');
+            $table->string('name');
+            $table->string('surname');
+            $table->date('date_birth');
+            $table->integer('game_number');
+            $table->unsignedBigInteger('team_id');
+            $table->string('avatar');
 
             $table->timestampsTz();
             $table->softDeletesTz();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 
@@ -34,6 +36,6 @@ class Feedback extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedback');
+        Schema::dropIfExists('players');
     }
 }

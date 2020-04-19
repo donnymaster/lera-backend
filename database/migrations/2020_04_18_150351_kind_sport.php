@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Feedback extends Migration
+class KindSport extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,12 @@ class Feedback extends Migration
      */
     public function up()
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('kind_sports', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('user_name');
-            $table->string('user_email');
-            $table->longText('message');
+            $table->string('name_kind_sport');
 
             $table->timestampsTz();
             $table->softDeletesTz();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -34,6 +29,6 @@ class Feedback extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedback');
+        Schema::dropIfExists('kind_sports');
     }
 }

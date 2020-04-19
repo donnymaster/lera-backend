@@ -18,7 +18,7 @@
     <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
+    <header class="header @yield('header-custom')">
         <nav class="wrapped__nav">
             <div class="container">
                <div class="nav">

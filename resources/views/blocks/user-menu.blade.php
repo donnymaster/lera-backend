@@ -6,7 +6,7 @@
                 <a class="menu-item__link" href="#">Личный аккаунт</a>
             </li>
             <li class="menu-item">
-                <a class="menu-item__link" href="/feedback.html">Связь с администрацией</a>
+                <a class="menu-item__link" href="{{ route('feedback.create') }}">Связь с администрацией</a>
             </li>
             <li class="menu-item">
                 <a class="menu-item__link" href="#"

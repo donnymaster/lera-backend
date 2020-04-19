@@ -21,8 +21,14 @@ Route::get('/', 'UserController@index')->name('root');
 
 Route::get('/home', 'UserController@index')->name('home');
 
+Route::resource('feedback', 'FeedbackController');
+
 Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::resource('broadcasts', 'BroadcastController');
+
+    Route::resource('players', 'PlayersController');
+
+    Route::resource('teams', 'TeamsController');
 
 });

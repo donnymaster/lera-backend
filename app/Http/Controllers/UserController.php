@@ -14,8 +14,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        //cache img url
-
         return view('user-side.index');
     }
 
