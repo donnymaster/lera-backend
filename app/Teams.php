@@ -10,4 +10,9 @@ class Teams extends Model
     {
         return $this->belongsTo(KindSport::class);
     }
+
+    public function players()
+    {
+        return $this->hasOne(Teams::class);
+    }
 }

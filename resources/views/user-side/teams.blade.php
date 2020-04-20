@@ -46,7 +46,8 @@
                     <div class="team-wrapped {{ $teams->total() <= 2 ? 'j-c-e' : null }}">
 
                         @php
-                            $route_name = 'team'
+                            $route_name = 'teams.show';
+                            $parameter_name = 'team';
                         @endphp
 
                         @foreach ($teams as $item)
@@ -55,6 +56,10 @@
 
                         @endforeach
 
+                    </div>
+
+                    <div class="page-links">
+                        {{ $teams->links() }}
                     </div>
 
                 @else

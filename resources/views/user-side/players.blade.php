@@ -32,7 +32,6 @@
 
         </div>
         <div class="two-column__elements">
-
                 @if($players->total() != 0)
 
                     <div class="elements__header">
@@ -56,6 +55,10 @@
 
                         @endforeach
 
+                    </div>
+
+                    <div class="page-links">
+                        {{ $players->appends(request()->query())->links() }}
                     </div>
 
                 @else

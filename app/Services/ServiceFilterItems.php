@@ -17,26 +17,35 @@ class ServiceFilterItems{
 
     public static function filter($class, $settings, $column, $with){
 
-        if(empty($settings)) {return $class::with($with)->paginate(10); }
+        if(empty($settings)) { return $class::with($with)->paginate(9); }
 
-        $config = array_key_exists('sort', $settings)
-                        ? array_slice($settings, 0, -1)
-                        : $settings;
+        $config = self::get_config($settings);
 
-        $condition = array();
+        if($config){
 
-        foreach ($config as $key => $value) {
-            array_push($condition, $value);
+            $condition = array();
+            foreach ($config as $key => $value) {
+                array_push($condition, $value);
+            }
+            return self::paginate(
+                self::sort(
+                    $class::whereIn($column, $condition)
+                            ->with($with)
+                            ->get(),
+                    $settings['sort'] ?? self::$SORT_TYPE[0]
+                ),
+                9
+            );
+
+        }else{
+            return self::paginate(
+                self::sort(
+                    $class::with($with)->get(),
+                    $settings['sort'] ?? self::$SORT_TYPE[0]
+                ),
+                9
+            );
         }
-
-        $items = $class::whereIn($column, $condition)
-                ->with($with)->get();
-
-        if(array_key_exists('sort', $settings)){
-            $items = self::sort($items, $settings['sort']);
-        }
-
-        return self::paginate($items, 10);
     }
 
     private static function sort($items, $sort){
@@ -69,6 +78,17 @@ class ServiceFilterItems{
 
         return in_array($sort, self::$SORT_TYPE);
 
+    }
+
+    public static function get_config($config){
+
+        $new_config = $config;
+        if(array_key_exists('page', $config)){
+            unset($new_config['page']);
+        }if(array_key_exists('sort', $config)){
+            unset($new_config['sort']);
+        }
+        return $new_config;
     }
 
     private static function paginate($items, $perPage = 15, $page = null, $options = []){

@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['verify' => true]);
 
-Route::get('/', 'UserController@index')->name('root');
+Route::get('/', 'HomeController@index')->name('root');
 
-Route::get('/home', 'UserController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('feedback', 'FeedbackController');
 
@@ -30,5 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::resource('players', 'PlayersController');
 
     Route::resource('teams', 'TeamsController');
+
+    Route::resource('user', 'UserController');
 
 });

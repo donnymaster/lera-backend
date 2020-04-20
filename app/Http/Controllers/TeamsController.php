@@ -6,9 +6,21 @@ use App\Services\ServiceFilterItems;
 use Illuminate\Http\Request;
 use App\Teams;
 use App\KindSport;
+use App\Players;
 
 class TeamsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin')->only([
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy'
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,15 +33,15 @@ class TeamsController extends Controller
             $request->all(),
             'kind_sport_id', // column name
             'kind_sport' // with
-        );
+        )->withPath('teams');
 
         $type_sports = KindSport::all();
-        $selected = $request->all() ?? "";
+        $config = ServiceFilterItems::get_config($request->all() ?? array());
 
         // sevices
-        if(!empty($request->all())){
-            $type_sports = $type_sports->map(function($item) use ($selected){
-                foreach ($selected as $key => $value) {
+        if($config){
+            $type_sports = $type_sports->map(function($item) use ($config){
+                foreach ($config as $key => $value) {
                     if($item->id == $value){
                         $item->isChecked = true;
                         break;
@@ -74,8 +86,9 @@ class TeamsController extends Controller
     public function show($id)
     {
         $team = Teams::where('id', '=', $id)->with('kind_sport')->first();
+        $players = Players::where('team_id', '=', $id)->paginate(8);
 
-        return view('user-side.team', compact('team'));
+        return view('user-side.team', compact('team', 'players'));
     }
 
     /**

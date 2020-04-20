@@ -24,6 +24,6 @@ function set_line(type){
 $('#other').click(function(){
     document.querySelector('.register__avatar-image-item--girl').classList.remove('register__avatar-image-item--line');
     document.querySelector('.register__avatar-image-item--men').classList.remove('register__avatar-image-item--line');
-    $("#img_file").trigger('click');
     document.querySelector('#default_image').setAttribute('value', "");
+    $("#img_file").trigger('click');
 })

@@ -24,7 +24,7 @@
                         <label class="label-form" for="user-name">От кого</label>
                         <input class="input-forms" required type="text" id="user-name" name="user_name" value="{{ $user_name }}">
 
-                        @error('name')
+                        @error('user_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -35,7 +35,7 @@
                         <label class="label-form" for="email">Ваша почта</label>
                         <input class="input-forms" required type="email" id="email" name="user_email" value="{{ $user_email }}">
 
-                        @error('email')
+                        @error('user_email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

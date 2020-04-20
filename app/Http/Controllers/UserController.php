@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user-side.index');
+        $user_info = User::where('id', '=', Auth::user()->id)->first();
+
+        return view('user-side.account', compact('user_info'));
     }
 
     /**
@@ -48,7 +53,35 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $validatedData = $request->validate([
+            'nick' => 'required|max:255',
+            'password' => 'required|min:6|max:20',
+            'email' => 'required'
+        ]);
+
+
+        if($request->input('default_image') == 'men' || $request->input('default_image') == 'girl'){
+            $validatedData['avatar'] = 'storage/avatars/' . $request->input('default_image') . '.png';
+        }
+
+        if($request['img'] != null){
+            $user_avatar = User::where('id', '=', Auth::user()->id)->first()->avatar;
+            if($user_avatar != 'storage/avatars/men.png' || $user_avatar != '/avatars/girl.png'){
+                Storage::delete('public/avatars/' . explode('/', $user_avatar)[2]);
+                $path = Storage::putFile('public/avatars', $request['img']);
+                $validatedData['avatar'] = 'storage/avatars/' . explode('/', $path)[2];
+            }else{
+                $path = Storage::putFile('public/avatars', $request['img']);
+                $validatedData['avatar'] = 'storage/avatars/' . explode('/', $path)[2];
+            }
+        }
+
+        User::where('id', '=', Auth::user()->id)->update(
+            $validatedData
+        );
+
+        return back()->with('update', 'Ваш аккаунт оновлений');
     }
 
     /**

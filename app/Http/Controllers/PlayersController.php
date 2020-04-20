@@ -9,6 +9,16 @@ use App\Players;
 
 class PlayersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin')->only([
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy'
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,15 +31,15 @@ class PlayersController extends Controller
             $request->all(),
             'kind_sport_id', // column name
             'kind_sport' // with
-        );
+        )->withPath('players');
 
         $type_sports = KindSport::all();
-        $selected = $request->all() ?? "";
+        $config = ServiceFilterItems::get_config($request->all() ?? array());
 
         // sevices
-        if(!empty($request->all())){
-            $type_sports = $type_sports->map(function($item) use ($selected){
-                foreach ($selected as $key => $value) {
+        if($config){
+            $type_sports = $type_sports->map(function($item) use ($config){
+                foreach ($config as $key => $value) {
                     if($item->id == $value){
                         $item->isChecked = true;
                         break;
@@ -73,7 +83,7 @@ class PlayersController extends Controller
      */
     public function show($id)
     {
-        $player = Players::where('id', '=', $id)->with('kind_sport')->first();
+        $player = Players::where('id', '=', $id)->with(['kind_sport', 'teams'])->first();
 
         return view('user-side.player', compact('player'));
     }

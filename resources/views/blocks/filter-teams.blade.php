@@ -6,7 +6,7 @@
             Вид спорту
         </div>
 
-        @foreach ($errors as $item)
+        @foreach ($type_sports as $item)
             <div class="broad-status">
                 <input type="checkbox"
                        id="sport-{{ $item->id }}"

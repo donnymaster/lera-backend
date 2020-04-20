@@ -59,6 +59,8 @@
     @endauth
     <script src="{{ asset('js/mobile-menu.js') }}"></script>
 
+    @yield('script')
+
 </body>
 
 </html>

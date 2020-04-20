@@ -8,14 +8,14 @@
                             <a href="{{ route('broadcasts.index') }}">ТРАНСЛЯЦІЇ</a>
                         </li>
                         <li>
-                            <a href="#">КОМАНДИ</a>
+                            <a href="{{ route('teams.index') }}">КОМАНДИ</a>
                         </li>
                         <li>
-                            <a href="#">СПОРТСМЕНИ</a>
+                            <a href="{{ route('players.index') }}">СПОРТСМЕНИ</a>
                         </li>
                         @if (Auth::check())
                         <li>
-                            <a href="#">Личный аккаунт</a>
+                            <a href="{{ route('user.index') }}">Личный аккаунт</a>
                         </li>
                         <li>
                             <a href="{{ route('feedback.create') }}">Связь с администрацией</a>

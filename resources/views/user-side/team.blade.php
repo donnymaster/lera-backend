@@ -41,8 +41,30 @@
   <div class="container">
       <div class="team-line"></div>
   </div>
-  <div class="team-and-broadcasts">
-      <!-- cards -->
+
+  <div class="container">
+    <div class="players-in-team">
+        <div class="title-players">Гравці в команді</div>
+        <div class="wrapped-items-players">
+
+            @php
+                $route_name = 'players.show';
+                $parameter_name = 'player';
+            @endphp
+
+            @forelse ($players as $item)
+
+                @include('blocks.card-item', compact('item'))
+
+            @empty
+                <h1 class="not-items">Гравці відсутні</h1>
+            @endforelse
+        </div>
+
+        <div class="page-links">
+            {{ $players->links() }}
+        </div>
+      </div>
   </div>
 
 @endsection

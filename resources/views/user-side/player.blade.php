@@ -27,11 +27,16 @@
             <div class="team-name">
                 {{ $player->name }}
                 {{ $player->surname }}
-                <span class="team-abbr">{{ $player->game_number }}</span>
+                <span class="team-abbr"> | Ігровий номер {{ $player->game_number }}</span>
             </div>
             <div class="wrapped-team-info">
+                <div class="team-city">{{ $player->city }}</div>
                 <div class="team-type-sport">{{ $player->kind_sport->name_kind_sport }}</div>
-            <div class="team-city">{{ $player->city }}</div>
+                <div class="team-type-sport">
+                    <a href="{{ route('teams.show', ['team' => $player->teams->id]) }}" class="link-team">
+                        {{ $player->teams->name }}
+                    </a>
+                </div>
             </div>
             <div class="team-desc">
                {{ $player->description }}

@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
+// use Alaouy\Youtube\Facades\Youtube;
+use Alaouy\Youtube\Youtube;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -23,6 +16,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $youtube = new Youtube('AIzaSyB6lRUeS2fapblNl7K0-5bsFIRsSk0NNI0');
+        dd($youtube->getVideoInfo('9cYAvs9RrbA')->snippet);
+        return view('user-side.index');
     }
 }
