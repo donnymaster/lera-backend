@@ -10,7 +10,7 @@
             </li>
            @if (Auth::user()->role->name_role == 'moderator')
             <li class="menu-item">
-                <a class="menu-item__link" href="{{ route('feedback.create') }}">Управління сайтом</a>
+                <a class="menu-item__link" href="{{ route('admin.index') }}">Управління сайтом</a>
             </li>
            @endif
             <li class="menu-item">

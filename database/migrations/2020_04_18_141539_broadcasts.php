@@ -16,10 +16,12 @@ class Broadcasts extends Migration
         Schema::create('broadcasts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('team_id');
+            $table->unsignedBigInteger('team_id_1');
+            $table->unsignedBigInteger('team_id_2');
             $table->string('url_video');
             $table->string('status');
-            $table->date('video_strart');
+            $table->date('video_start_date');
+            $table->time('video_start_time');
             $table->string('logo');
 
             $table->timestampsTz();

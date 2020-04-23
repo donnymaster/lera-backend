@@ -33,4 +33,18 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::resource('user', 'UserController');
 
+    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
+
+        Route::get('index', 'ManagementController@index')->name('admin.index');
+        Route::get('teams', 'ManagementController@teams')->name('admin.teams');
+        Route::get('broadcasts', 'ManagementController@broadcasts')->name('admin.broadcasts');
+        Route::get('players', 'ManagementController@players')->name('admin.players');
+
+        Route::get('broadcasts-json', 'ManagementController@broadcastsJson')->name('admin.broadcastsJson');
+        Route::get('teams-json', 'ManagementController@teamsJson')->name('admin.teamsJson');
+        Route::get('players-json', 'ManagementController@playersJson')->name('admin.playersJson');
+
+        Route::get('autocomplete-teams', 'ManagementController@autocompleteTeams')->name('admin.complete.teams');
+    });
+
 });

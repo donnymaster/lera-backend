@@ -67,7 +67,7 @@ class BroadcastController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $id;
     }
 
     /**
@@ -90,6 +90,6 @@ class BroadcastController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $id;
     }
 }

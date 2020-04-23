@@ -6,6 +6,8 @@ use App\KindSport;
 use App\Services\ServiceFilterItems;
 use Illuminate\Http\Request;
 use App\Players;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PlayersController extends Controller
 {
@@ -61,7 +63,11 @@ class PlayersController extends Controller
      */
     public function create()
     {
-        //
+
+        $kind_sports = KindSport::all();
+
+        return view('admin.add-player', compact('kind_sports'));
+
     }
 
     /**
@@ -72,7 +78,25 @@ class PlayersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'surname' => 'required|max:255',
+            'game_number' => 'required',
+            'city' => 'required',
+            'description' => 'required|min:6|max:2000',
+            'kind_sport_id' => 'required|exists:kind_sports,id',
+            'team_id' => 'required|exists:teams,id',
+            'date_birth' => 'required',
+            'avatar' => 'required'
+        ]);
+        // save file
+        $validatedData['avatar'] = Storage::putFile('public/players', $validatedData['avatar']);
+       // dd($validatedData);
+        $validatedData['date_birth'] = \Carbon\Carbon::parse($request['date_birth'])->format('Y-m-d');
+
+        Players::create($validatedData);
+
+        return back()->with('make', 'Новий гравець доданий');
     }
 
     /**
@@ -96,7 +120,12 @@ class PlayersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $player = Players::where('id', '=', $id)->with(['kind_sport', 'teams'])->first();
+        $kind_sports = KindSport::all();
+
+        $date_birth = \Carbon\Carbon::parse($player->date_birth)->format('m/d/Y');
+
+        return view('admin.edit-player', compact('player', 'kind_sports', 'date_birth'));
     }
 
     /**
@@ -108,7 +137,31 @@ class PlayersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'surname' => 'required|max:255',
+            'game_number' => 'required',
+            'city' => 'required',
+            'description' => 'required|min:6|max:2000',
+            'kind_sport_id' => 'required|exists:kind_sports,id',
+            'team_id' => 'required|exists:teams,id',
+            'date_birth' => 'required'
+        ]);
+
+        $player = Players::where('id', '=', $id)->first();
+        $old_name = $player->name;
+
+        if($request->hasFile('avatar_update')){
+            $validatedData['avatar'] = Storage::putFile('public/players', $request->file('avatar_update'));
+            Storage::delete($player->avatar);
+        }
+
+        $validatedData['date_birth'] = \Carbon\Carbon::parse($validatedData['date_birth'])->format('Y-m-d');
+
+        $player->update($validatedData);
+
+        return back()->with('update', 'Гравець  ' . $old_name . ' оновлений');
     }
 
     /**
@@ -119,6 +172,13 @@ class PlayersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $player = Players::where('id', '=', $id)->first();
+
+        if($player){
+            $player->delete();
+            return back()->with('delete', 'Гравець був видалений');
+        }
+
+        return back();
     }
 }

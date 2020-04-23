@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Teams;
 use App\KindSport;
 use App\Players;
+use KindSport as GlobalKindSport;
 
 class TeamsController extends Controller
 {
@@ -63,7 +64,7 @@ class TeamsController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -99,7 +100,7 @@ class TeamsController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -122,6 +123,19 @@ class TeamsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $team = Teams::where('id', '=', $id)->first();
+        if($team){
+            $team_name = $team->name;
+            try {
+                $team->delete();
+                return back()->with('delete', 'Команда ' . $team_name . ' була видалена');
+            } catch (\Illuminate\Database\QueryException $th) {
+                if($th->errorInfo[0] == '23000'){
+                    return back()->with('delete', 'Ви не можете видалити цей запис так, як на неї посилаються інші записи!');
+                }
+            }
+        }
+
+        return back();
     }
 }

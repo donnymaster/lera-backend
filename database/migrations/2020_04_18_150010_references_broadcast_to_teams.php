@@ -14,7 +14,8 @@ class ReferencesBroadcastToTeams extends Migration
     public function up()
     {
         Schema::table('broadcasts', function (Blueprint $table) {
-            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreign('team_id_1')->references('id')->on('teams');
+            $table->foreign('team_id_2')->references('id')->on('teams');
         });
     }
 
@@ -26,7 +27,7 @@ class ReferencesBroadcastToTeams extends Migration
     public function down()
     {
         Schema::table('broadcasts', function (Blueprint $table) {
-            $table->dropForeign(['team_id']);
+            $table->dropForeign(['team_id_1', 'team_id_2']);
         });
     }
 }
