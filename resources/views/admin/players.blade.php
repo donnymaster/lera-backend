@@ -118,9 +118,9 @@
         });
         $('#category-table').on( 'draw.dt', function () {
            $('.delete-item').on('click', function(){
-                var id = $(this).attr('data-id');
                 var link = $('#delete-form').attr("action");
-                var new_link = (link.substring(0, link.length - 1)) + id;
+                var num_last = link.lastIndexOf('/') + 1;
+                var new_link = link.substr(0, num_last) + $(this).attr('data-id');
                 $('#delete-form').attr('action', new_link);
            });
         } );

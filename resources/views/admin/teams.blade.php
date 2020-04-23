@@ -6,11 +6,10 @@
 
 @section('custom-css')
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-    {{-- <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.css') }}"> --}}
 @endsection
 
 @section('create-btn')
-     <a type="button" href="broadcast-1.html" class="btn btn-primary">Додати Команду</a>
+     <a type="button" href="{{ route('teams.create') }}" class="btn btn-primary">Додати команду</a>
 @endsection
 
 @section('breadcrumb')

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Broadcast;
+use App\KindSport;
+use App\Services\ServiceValidBroadcast;
+use App\Services\ServiceYoutube;
 use Illuminate\Http\Request;
 
 class BroadcastController extends Controller
@@ -34,7 +38,9 @@ class BroadcastController extends Controller
      */
     public function create()
     {
-        //
+        $kind_sports = KindSport::all();
+
+        return view('admin.add-broadcast', compact('kind_sports'));
     }
 
     /**
@@ -45,7 +51,13 @@ class BroadcastController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validatedData = ServiceValidBroadcast::valid($request);
+
+        Broadcast::create($validatedData);
+
+        return back()->with('make', 'Трансляція була додана');
+
     }
 
     /**
@@ -67,7 +79,14 @@ class BroadcastController extends Controller
      */
     public function edit($id)
     {
-        return $id;
+        $broadcast = Broadcast::where('id', '=', $id)->with(['kind_sport', 'team_1', 'team_2'])->first();
+
+        $kind_sports = KindSport::all();
+
+        $video_start_date = \Carbon\Carbon::parse($broadcast->video_start_date)->format('m/d/Y');
+
+        return view('admin.edit-broadcast', compact(['broadcast', 'kind_sports', 'video_start_date']));
+
     }
 
     /**
@@ -79,7 +98,13 @@ class BroadcastController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = ServiceValidBroadcast::valid($request);
+        $broadcast = Broadcast::where('id', '=', $id)->first();
+        $broadcast_name = $broadcast->name;
+
+        $broadcast->update($validatedData);
+
+        return back()->with('update', 'Трансляція ' . $broadcast_name . ' була оновлена');
     }
 
     /**
@@ -90,6 +115,20 @@ class BroadcastController extends Controller
      */
     public function destroy($id)
     {
-        return $id;
+        $broadcast = Broadcast::where('id', '=', $id)->first();
+
+        if($broadcast){
+            $broadcast_name = $broadcast->name;
+            try {
+                $broadcast->delete();
+                return back()->with('delete', 'Трансляція ' . $broadcast_name . ' була видалена');
+            } catch (\Illuminate\Database\QueryException $th) {
+                if($th->errorInfo[0] == '23000'){
+                    return back()->with('delete', 'Ви не можете видалити цей запис так, як на неї посилаються інші записи!');
+                }
+            }
+        }
+
+        return back();
     }
 }

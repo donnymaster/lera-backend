@@ -8,29 +8,92 @@ class ServiceYoutube{
         'videos.list' => 'https://www.googleapis.com/youtube/v3/videos'
     ];
 
-    public static function getStatusBroadcast($id_video){
+    public static function getStatusBroadcast($url_video){
 
-        $info = self::getVideoInfo($id_video);
+        $info = self::getVideoInfo(self::getId($url_video));
 
         if($info == false) { return false; } // удалено или скрыто
 
-        // $video_info = [
-        //     'statusBroadcast' => $info->snippet->liveBroadcastContent,
-        //     'videoCover' => $info->snippet->thumbnails->maxres->url,
-        //     'privacyStatus' => $info->status->privacyStatus
-        // ];
+        $status = $info->snippet->liveBroadcastContent;
+        $video_status = "";
 
-        return $info->snippet->liveBroadcastContent;
+        switch ($status) {
+            case 'none':
+                $video_status = "закінчилася";
+                break;
+            case 'upcoming':
+                $video_status = "в майбутньому";
+                break;
+            case 'live':
+                $video_status = "у прямому ефірі";
+                break;
+
+        }
+
+        return $video_status;
     }
 
-    public static function getCoverVideo($id_video){
+    public static function getCoverVideo($url_video){
 
-        $info = self::getVideoInfo($id_video);
+        $info = self::getVideoInfo(self::getId($url_video));
 
         if($info == false) { return false; } // удалено или скрыто
 
-        return $info->snippet->thumbnails->maxres->url;
+        $data = json_decode(json_encode($info), true);
 
+        if(array_key_exists('maxres', $data['snippet']['thumbnails'])){
+            return $data['snippet']['thumbnails']['maxres']['url'];
+        }
+        if(array_key_exists('standard', $data['snippet']['thumbnails'])){
+            return $data['snippet']['thumbnails']['standard']['url'];
+        }
+        if(array_key_exists('high', $data['snippet']['thumbnails'])){
+            return $data['snippet']['thumbnails']['high']['url'];
+        }
+
+        return 'non-avatar';
+
+    }
+
+    public static function getClasBroadcast($status){
+
+        $class = "";
+
+        switch ($status) {
+            case 'закінчилася':
+                $class = 'badge badge-pill badge-warning';
+                break;
+            case 'в майбутньому':
+                $class = 'badge badge-pill badge-info';
+                break;
+            case 'у прямому ефірі':
+                $class = 'badge badge-pill badge-success';
+                break;
+        }
+
+        return $class;
+
+    }
+
+    public static function getStatusVideo($url_video){
+
+        $info = self::getVideoInfo(self::getId($url_video));
+
+        if($info == false) { return false; }
+
+        return true;
+    }
+
+    public static function getId($str_video){
+
+        $video = array();
+
+        parse_str( parse_url( $str_video, PHP_URL_QUERY ), $video );
+
+        if(array_key_exists('v', $video)){
+            return $video['v'];
+        }
+        return '';
     }
 
     public static function getVideoInfo($vId, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status'])

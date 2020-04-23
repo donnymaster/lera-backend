@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Teams;
 use App\KindSport;
 use App\Players;
-use KindSport as GlobalKindSport;
+use App\Services\ServicesAbbr;
+use Illuminate\Support\Facades\Storage;
+
 
 class TeamsController extends Controller
 {
@@ -64,7 +66,9 @@ class TeamsController extends Controller
      */
     public function create()
     {
+        $kind_sports = KindSport::all();
 
+        return view('admin.add-team', compact('kind_sports'));
     }
 
     /**
@@ -75,7 +79,20 @@ class TeamsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'kind_sport_id' => 'required|exists:kind_sports,id',
+            'city' => 'required',
+            'description' => 'required|min:6|max:2000',
+            'logo' => 'required'
+        ]);
+
+        $validatedData['abbr'] = ServicesAbbr::abbreviate($request->input('name'));
+        $validatedData['logo'] = Storage::putFile('public/teams', $validatedData['logo']);
+
+        Teams::create($validatedData);
+
+        return back()->with('make', 'Нова команда створена');
     }
 
     /**
@@ -100,7 +117,10 @@ class TeamsController extends Controller
      */
     public function edit($id)
     {
+        $team = Teams::where('id', '=', $id)->with('kind_sport')->first();
+        $kind_sports = KindSport::all();
 
+        return view('admin.edit-team', compact('team', 'kind_sports'));
     }
 
     /**
@@ -112,7 +132,24 @@ class TeamsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'kind_sport_id' => 'required|exists:kind_sports,id',
+            'city' => 'required',
+            'description' => 'required|min:6|max:2000'
+        ]);
+
+        $team = Teams::where('id', '=', $id)->first();
+        $old_name = $team->name;
+
+        if($request->hasFile('logo')){
+            $validatedData['logo'] = Storage::putFile('public/teams', $request->file('logo'));
+            Storage::delete($team->avatar);
+        }
+
+        $team->update($validatedData);
+
+        return back()->with('update', 'Гравець  ' . $old_name . ' оновлений');
     }
 
     /**

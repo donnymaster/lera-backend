@@ -10,7 +10,7 @@
 @endsection
 
 @section('create-btn')
-     <a type="button" href="broadcast-1.html" class="btn btn-primary">Додати трансляцію</a>
+     <a type="button" href="{{ route('broadcasts.create') }}" class="btn btn-primary">Додати трансляцію</a>
 @endsection
 
 @section('breadcrumb')
@@ -37,6 +37,11 @@
     <div class="col-12">
         <div class="card">
          <div class="card-body">
+            @if (session('delete'))
+                <div class="alert alert-danger text-center" role="alert">
+                    {{ session('delete') }}
+                </div>
+            @endif
              <div class="table-responsive">
                 <table class="table table-bordered" id="category-table">
                     <thead>
@@ -97,12 +102,13 @@
                 },
                 processing: true,
                 serverSide: true,
+                ordering: true,
                 ajax: '{!! route('admin.broadcastsJson') !!}',
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
-                    { data: 'team_id_1', name: 'team_id_1' },
-                    { data: 'team_id_2', name: 'team_id_2' },
+                    { data: 'team_id_1', name: 'team_1.name' },
+                    { data: 'team_id_2', name: 'team_2.name' },
                     { data: 'status', name: 'status' },
                     { data: 'video_start', name: 'video_start_date' },
                     {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -111,9 +117,9 @@
         });
         $('#category-table').on( 'draw.dt', function () {
            $('.delete-item').on('click', function(){
-                var id = $(this).attr('data-id');
                 var link = $('#delete-form').attr("action");
-                var new_link = (link.substring(0, link.length - 1)) + id;
+                var num_last = link.lastIndexOf('/') + 1;
+                var new_link = link.substr(0, num_last) + $(this).attr('data-id');
                 $('#delete-form').attr('action', new_link);
            });
         } );

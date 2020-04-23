@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Broadcast;
 use App\Players;
+use App\Services\ServiceYoutube;
 use App\Teams;
 use Illuminate\Http\Request;
 use Symfony\Component\VarDumper\Cloner\Data;
@@ -41,7 +42,7 @@ class ManagementController extends Controller
 
     public function broadcastsJson()
     {
-        $broadcast = DataTables::of(Broadcast::with(['team_1', 'team_2']))
+        $broadcast = DataTables::of(Broadcast::with(['team_1', 'team_2'])->select('broadcasts.*'))
             ->addColumn('action', function($item){
                 return '
                     <div class="edit-delete">
@@ -55,6 +56,26 @@ class ManagementController extends Controller
                     </div>
                 ';
             })
+            ->editColumn('name', function($item){
+                return '
+                    <a data-order="' . $item->id . '" target="_blank" href="' . route('broadcasts.show', ['broadcast' => $item->id]) . '">
+                        ' . $item->name . '
+                    </a>
+                ';
+            })
+            ->editColumn('status', function($item){
+                return '
+                    <div class="text-center">
+                        <div class="
+                            ' . ServiceYoutube::getClasBroadcast($item->status) . '
+                        ">
+                           ' . $item->status . '
+                        </div>
+                    </div>
+                ';
+            })
+            ->orderColumns(['name', 'status'], ':column $1')
+            ->rawColumns(['status', 'action', 'name'])
             ->addColumn('team_id_1', function($item){
                 return $item->team_1->name;
             })
@@ -85,12 +106,21 @@ class ManagementController extends Controller
                             </div>
                         ';
                     })
+                    ->editColumn('name', function($item){
+                        return '
+                            <a target="_blank" href="' . route('teams.show', ['team' => $item->id]) . '">
+                                ' . $item->name . '
+                            </a>
+                        ';
+                    })
+                    ->orderColumn('name', 'name $1')
                     ->addColumn('kind_sport', function($item){
                         return $item->kind_sport->name_kind_sport;
                     })
                     ->addColumn('description', function($item){
                         return Str::limit($item->description, 20);
                     })
+                    ->rawColumns(['action', 'name'])
                     ->make(true);
         return $teams;
     }
@@ -111,12 +141,21 @@ class ManagementController extends Controller
                                 </div>
                             ';
                         })
+                        ->editColumn('name', function($item){
+                            return '
+                                <a target="_blank" href="' . route('players.show', ['player' => $item->id]) . '">
+                                    ' . $item->name . '
+                                </a>
+                            ';
+                        })
                         ->addColumn('teams', function($item){
                             return $item->teams->name;
                         })
                         ->addColumn('description', function($item){
                             return Str::limit($item->description, 20);
                         })
+                        ->orderColumns(['name', 'description'], ':column $1')
+                        ->rawColumns(['action', 'name'])
                         ->make(true);
         return $players;
     }

@@ -13,6 +13,11 @@ class KindSport extends Model
 
     protected $fillable = ['name_kind_sport'];
 
+
+    public function broadcast(){
+        return $this->belongsTo(Broadcast::class);
+    }
+
     public function teams()
     {
         return $this->hasOne(Teams::class);

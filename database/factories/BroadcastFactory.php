@@ -14,6 +14,8 @@ $factory->define(Broadcast::class, function (Faker $faker) {
         'status' => 'procces',
         'video_start_date' => $faker->date(),
         'video_start_time' => $faker->time(),
-        'logo' => 'url'
+        'logo' => 'url',
+        'description' => $faker->text(300),
+        'kind_sport_id' => rand(1,7)
     ];
 });

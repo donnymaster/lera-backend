@@ -115,7 +115,7 @@
 
                                   @forelse ($kind_sports as $sport)
                                         <option value="{{ $sport->id }}"
-                                            {{ $player->kind_sport->name_kind_sport == $sport->name_kind_sport ?? 'selected' }}
+                                            {{ $player->kind_sport->name_kind_sport == $sport->name_kind_sport ? 'selected' : null }}
                                             >{{ $sport->name_kind_sport }}</option>
                                     @empty
                                         <option value="0">Відсутні</option>

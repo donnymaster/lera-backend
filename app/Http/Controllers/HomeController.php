@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // dd(ServiceYoutube::getStatusBroadcast('JLZ2UZaebf0'));
+        // dd(ServiceYoutube::getStatusBroadcast('https://www.youtube.com/watch?v=lD6bmfelOIs'));
         // $youtube = new Youtube('AIzaSyB6lRUeS2fapblNl7K0-5bsFIRsSk0NNI0');
         // dd($youtube->getVideoInfo('9cYAvs9RrbA')->snippet);
         return view('user-side.index');

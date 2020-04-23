@@ -92,7 +92,7 @@ class PlayersController extends Controller
         // save file
         $validatedData['avatar'] = Storage::putFile('public/players', $validatedData['avatar']);
        // dd($validatedData);
-        $validatedData['date_birth'] = \Carbon\Carbon::parse($request['date_birth'])->format('Y-m-d');
+        $validatedData['date_birth'] = \Carbon\Carbon::parse($validatedData['date_birth'])->format('Y-m-d');
 
         Players::create($validatedData);
 
@@ -175,8 +175,15 @@ class PlayersController extends Controller
         $player = Players::where('id', '=', $id)->first();
 
         if($player){
-            $player->delete();
-            return back()->with('delete', 'Гравець був видалений');
+            $player_name = $player->name;
+            try {
+                $player->delete();
+                return back()->with('delete', 'Гравець ' . $player_name . ' був видалений');
+            } catch (\Illuminate\Database\QueryException $th) {
+                if($th->errorInfo[0] == '23000'){
+                    return back()->with('delete', 'Ви не можете видалити цей запис так, як на неї посилаються інші записи!');
+                }
+            }
         }
 
         return back();
