@@ -151,6 +151,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Alaouy\Youtube\YoutubeServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,

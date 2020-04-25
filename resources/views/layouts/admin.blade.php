@@ -119,6 +119,12 @@
                                 <span class="hide-menu">Гравці</span>
                             </a>
                         </li>
+                        <li class="sidebar-item @yield('active-feedback')">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.feedbacks') }}" aria-expanded="false">
+                                <i class="mdi mdi-border-inside"></i>
+                                <span class="hide-menu">Питання користувачів</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>

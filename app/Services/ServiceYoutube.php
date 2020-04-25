@@ -8,6 +8,11 @@ class ServiceYoutube{
         'videos.list' => 'https://www.googleapis.com/youtube/v3/videos'
     ];
 
+    public const BROADCAST_LIVE = "live";
+    public const BROADCAST_NONE = "none";
+    public const BROADCAST_UPCOMING = "upcoming";
+
+
     public static function getStatusBroadcast($url_video){
 
         $info = self::getVideoInfo(self::getId($url_video));
@@ -18,16 +23,17 @@ class ServiceYoutube{
         $video_status = "";
 
         switch ($status) {
-            case 'none':
+            case self::BROADCAST_NONE:
                 $video_status = "закінчилася";
                 break;
-            case 'upcoming':
+
+            case self::BROADCAST_UPCOMING:
                 $video_status = "в майбутньому";
                 break;
-            case 'live':
+
+            case self::BROADCAST_LIVE:
                 $video_status = "у прямому ефірі";
                 break;
-
         }
 
         return $video_status;

@@ -27,4 +27,13 @@ class KindSport extends Model
     {
         return $this->hasOne(Teams::class);
     }
+
+    public function statistic_type_sport()
+    {
+        return $this->hasOne(StatisticTypeSport::class);
+    }
+    public function statistic_view_sport()
+    {
+        return $this->hasOne(StatisticViewSport::class);
+    }
 }

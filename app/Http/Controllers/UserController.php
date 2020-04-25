@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -60,6 +61,7 @@ class UserController extends Controller
             'email' => 'required'
         ]);
 
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
         if($request->input('default_image') == 'men' || $request->input('default_image') == 'girl'){
             $validatedData['avatar'] = 'storage/avatars/' . $request->input('default_image') . '.png';

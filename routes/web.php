@@ -39,10 +39,14 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::get('teams', 'ManagementController@teams')->name('admin.teams');
         Route::get('broadcasts', 'ManagementController@broadcasts')->name('admin.broadcasts');
         Route::get('players', 'ManagementController@players')->name('admin.players');
+        Route::get('feedbacks', 'ManagementController@feedbacks')->name('admin.feedbacks');
 
         Route::get('broadcasts-json', 'ManagementController@broadcastsJson')->name('admin.broadcastsJson');
         Route::get('teams-json', 'ManagementController@teamsJson')->name('admin.teamsJson');
         Route::get('players-json', 'ManagementController@playersJson')->name('admin.playersJson');
+        Route::get('feedbacks-lson', 'ManagementController@feedbacksJson')->name('admin.feedbacksJson');
+        Route::get('feedbacks/{id}', 'ManagementController@answerFeedback')->name('admin.answerFeedback');
+        Route::post('feedbacks', 'ManagementController@answerQuestion')->name('admin.answerQuestion');
 
         Route::get('autocomplete-teams', 'ManagementController@autocompleteTeams')->name('admin.complete.teams');
     });

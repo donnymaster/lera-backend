@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Broadcast;
+use App\Feedback;
 use App\Players;
 use App\Services\ServiceYoutube;
 use App\Teams;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FeedbackMail;
 
 class ManagementController extends Controller
 {
@@ -38,6 +41,73 @@ class ManagementController extends Controller
 
         return view('admin.broadcasts');
 
+    }
+
+    public function feedbacks()
+    {
+        return view('admin.feedback');
+    }
+
+    public function answerFeedback($id)
+    {
+        $feedback = Feedback::where('id', '=', $id)->first();
+
+        if(!$feedback){ return back(); }
+
+        return view('admin.answer-feedback', compact('feedback'));
+    }
+
+    public function answerQuestion(Request $request)
+    {
+        $validatedData = $request->validate([
+            'answer-admin' => 'required|min:6',
+            'user_name' => 'required|max:255',
+            'user_email' => 'required'
+        ]);
+
+        $feedback = (object) '';
+        $feedback->user_name = $validatedData['user_name'];
+        $feedback->answer = $validatedData['answer-admin'];
+        $email_send = 'Ваша відповідь відправлена';
+
+        try {
+
+            $foo = Mail::to($validatedData['user_email'])->send(new FeedbackMail($feedback));
+
+            Feedback::where('id', '=', $request->input('id'))->delete();
+
+            return view('admin.feedback', compact('email_send'));
+
+        } catch (\Throwable $th) {
+            $error_send = $th->getMessage();
+            return view('admin.feedback', compact('error_send'));
+        }
+
+    }
+
+    public function feedbacksJson()
+    {
+        $feedbacks = DataTables::of(Feedback::with('user'))
+                        ->addColumn('action', function($item){
+                            return '
+                                <div class="edit-delete">
+
+                                    <a href="' . route('admin.answerFeedback', ['id' => $item->id]) . '"
+                                        class="btn btn-primary btn-sm">
+                                        Відповісти
+                                    </a>
+
+                                </div>
+                            ';
+                        })
+                        ->editColumn('message', function($item){
+                            return Str::limit($item->message, 20);
+                        })
+                        ->orderColumn('message', 'message $1')
+                        ->rawColumns(['action'])
+                        ->make(true);
+
+        return $feedbacks;
     }
 
     public function broadcastsJson()

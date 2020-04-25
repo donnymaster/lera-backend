@@ -78,6 +78,11 @@
           </div>
       </div>
       <div class="container">
+
+        {!! $chart->container() !!}
+
+      </div>
+      <div class="container">
         <div class="team-line"></div>
     </div>
       <div class="container">
@@ -142,3 +147,7 @@
   </div>
 @endsection
 
+@section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+    {!! $chart->script() !!}
+@endsection
