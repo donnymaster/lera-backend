@@ -13,6 +13,8 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FeedbackMail;
+use App\Services\ServiceChart;
+use App\Services\ServiceChartFeedback;
 
 class ManagementController extends Controller
 {
@@ -23,7 +25,15 @@ class ManagementController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        $chart_views_sport = ServiceChart::chart('statistic_views_sport');
+
+        $chart_type_sport = ServiceChart::chart('statistic_type_sports');
+
+        $chart_feedback = ServiceChartFeedback::chart();
+
+      //  dd($chart_feedback);
+
+        return view('admin.index', compact('chart_views_sport', 'chart_type_sport', 'chart_feedback'));
     }
 
     public function teams()

@@ -60,6 +60,17 @@ class HomeController extends Controller
         //             ]);
         // }
         // dd($chart);
-        return view('user-side.index', compact('chart'));
+
+        $message = \App\Message::create([
+            'message' => 'hello',
+            'user_id' => 1,
+            'broadcast_id' => 1
+        ]);
+
+        $foo = event(new \App\Events\ChatMessage($message));
+
+        dd($foo);
+
+        return view('user-side.index');
     }
 }

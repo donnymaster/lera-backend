@@ -56,7 +56,8 @@ class TeamsController extends Controller
             });
         }
 
-        return view('user-side.teams', compact('type_sports', 'teams'));
+        // return view('user-side.teams', compact('type_sports', 'teams'));
+        return view('user-side.test');
     }
 
     /**

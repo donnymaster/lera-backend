@@ -11,6 +11,16 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
+
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+// Broadcast::routes(['middleware' => ['web', 'auth']]);
+// Broadcast::channel('chat.{task_id}', \App\Broadcasting\MessagesChannel::class);
+Broadcast::channel('chat', function ($user) {
+    return Auth::check();
+  });
+
