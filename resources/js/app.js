@@ -26,7 +26,7 @@ window.Vue = require('vue');
 Vue.component('chat-messages', require('./components/ChatMessages.vue').default);
 Vue.component('chat-form', require('./components/ChatForm.vue').default);
 
-const app = new Vue({
+const userChat = new Vue({
     el: '#app',
 
     data: {
@@ -35,11 +35,13 @@ const app = new Vue({
 
     created() {
         this.fetchMessages();
+        console.log(this.$refs);
     },
 
     methods: {
         fetchMessages() {
-            axios.get('/messages').then(response => {
+            const id_broadcast = document.getElementById("id_broadcast").getAttribute('value');
+            axios.get(`/messages/${id_broadcast}`).then(response => {
                 this.messages = response.data;
             });
         },
@@ -48,16 +50,19 @@ const app = new Vue({
             this.messages.push(message);
 
             axios.post('/messages', message).then(response => {
-              console.log(response.data);
+            //   console.log(response.data);
             });
         }
     }
 });
 
-Echo.private('chat')
+const channel = 'chat.' + document.getElementById("id_broadcast").getAttribute('value');
+
+
+Echo.private(channel)
   .listen('MessageSent', (e) => {
-    app.messages.push({
+    userChat.messages.push({
       message: e.message.message,
       user: e.user
     });
-  });
+});

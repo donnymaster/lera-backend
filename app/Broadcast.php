@@ -9,7 +9,7 @@ class Broadcast extends Model
 {
     protected $table = 'broadcasts';
 
-    protected $fillable = ['name', 'team_id_1', 'team_id_2', 'url_video', 'status', 'video_start_date', 'video_start_time', 'logo', 'description', 'kind_sport_id'];
+    protected $fillable = ['name', 'team_id_1', 'team_id_2', 'url_video', 'status', 'video_start_date', 'video_start_time', 'logo', 'description', 'kind_sport_id', 'identifier'];
 
     public function kind_sport(){
         return $this->hasOne(KindSport::class, 'id', 'kind_sport_id');

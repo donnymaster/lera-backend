@@ -2,7 +2,7 @@
 
 @section('title', $team->name)
 
-@section('header-custom', 'h-auto')
+@section('header-custom', 'h-auto-2')
 
 @section('content-main')
 
@@ -21,7 +21,7 @@
   <div class="container">
     <div class="team">
         <div class="team__logo">
-            <img src="https://via.placeholder.com/500x400" alt="team">
+            <img src="{{ Storage::url($team->logo)  }}" alt="team">
         </div>
         <div class="team__desc">
             <div class="team-name">

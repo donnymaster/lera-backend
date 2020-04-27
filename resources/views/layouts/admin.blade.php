@@ -79,7 +79,13 @@
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="{{ route('root') }}">Перейти на сайт</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)">Вихід</i></a>
+                                <a class="dropdown-item" href="javascript:void(0)"
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form-desktop').submit();"
+                                >Вихід</i></a>
+                                <form id="logout-form-desktop" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -97,31 +103,31 @@
                     <ul id="sidebarnav" class="p-t-30 in">
                         <li class="sidebar-item @yield('active-main')">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.index') }}" aria-expanded="false">
-                                <i class="mdi mdi-view-dashboard"></i>
+                                <i class="mdi mdi-chart-bar"></i>
                                 <span class="hide-menu">Головна</span>
                             </a>
                         </li>
                         <li class="sidebar-item @yield('active-broad')">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.broadcasts') }}" aria-expanded="false">
-                                <i class="mdi mdi-chart-bar"></i>
+                                <i class="mdi mdi-harddisk"></i>
                                 <span class="hide-menu">Трансляції</span>
                             </a>
                         </li>
                         <li class="sidebar-item @yield('active-teams')">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.teams') }}" aria-expanded="false">
-                                <i class="mdi mdi-chart-bubble"></i>
+                                <i class="mdi mdi-account-multiple"></i>
                                 <span class="hide-menu">Команди</span>
                             </a>
                         </li>
                         <li class="sidebar-item @yield('active-players')">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.players') }}" aria-expanded="false">
-                                <i class="mdi mdi-border-inside"></i>
+                                <i class="mdi mdi-account"></i>
                                 <span class="hide-menu">Гравці</span>
                             </a>
                         </li>
                         <li class="sidebar-item @yield('active-feedback')">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.feedbacks') }}" aria-expanded="false">
-                                <i class="mdi mdi-border-inside"></i>
+                                <i class="mdi mdi-comment-question-outline"></i>
                                 <span class="hide-menu">Питання користувачів</span>
                             </a>
                         </li>

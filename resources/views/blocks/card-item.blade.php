@@ -3,7 +3,12 @@
         <img class="card-link-arrow" src="{{ asset('img/forward-arrow.png') }}" alt="arrow">
     </div>
         <div class="card-teams-img">
-            <img src="https://via.placeholder.com/250x300" alt="team">
+            @isset($item->avatar)
+                <img src="{{ Storage::url($item->avatar) }}" alt="team">
+            @endisset
+            @isset($item->logo)
+            <img src="{{ Storage::url($item->logo) }}" alt="team">
+        @endisset
         </div>
         <div class="card-teams-body">
             <div class="card-teams-title">

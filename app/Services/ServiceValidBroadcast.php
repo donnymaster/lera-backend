@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Str;
+
 class ServiceValidBroadcast{
 
-    public static function valid($request){
+    public static function valid($request, $create = false){
 
         $validatedData = $request->validate([
             'name' => 'required|max:255',
@@ -24,6 +26,11 @@ class ServiceValidBroadcast{
         $validatedData['video_start_date'] = \Carbon\Carbon::parse($validatedData['video_start_date'])->format('Y-m-d');
         $validatedData['logo'] = ServiceYoutube::getCoverVideo($validatedData['url_video']);
         $validatedData['status'] = ServiceYoutube::getStatusBroadcast($validatedData['url_video']);
+
+        if($create)
+        {
+            $validatedData['identifier'] = Str::uuid();
+        }
 
         return $validatedData;
 

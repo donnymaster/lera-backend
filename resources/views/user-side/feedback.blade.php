@@ -2,7 +2,7 @@
 
 @section('title', 'Форма зв\'язку з адміністрацією')
 
-@section('header-custom', 'h-auto')
+@section('header-custom', 'h-auto-2')
 
 @section('content-main')
 
@@ -21,7 +21,7 @@
                 @csrf
                 <div class="form-header">
                     <div class="group-input">
-                        <label class="label-form" for="user-name">От кого</label>
+                        <label class="label-form" for="user-name">Від кого</label>
                         <input class="input-forms" required type="text" id="user-name" name="user_name" value="{{ $user_name }}">
 
                         @error('user_name')
@@ -32,7 +32,7 @@
 
                     </div>
                     <div class="group-input">
-                        <label class="label-form" for="email">Ваша почта</label>
+                        <label class="label-form" for="email">Ваша пошта</label>
                         <input class="input-forms" required type="email" id="email" name="user_email" value="{{ $user_email }}">
 
                         @error('user_email')
@@ -45,7 +45,7 @@
                 </div>
                 <div class="form-body">
                     <div class="group-textarea">
-                        <label class="label-form" for="body">Ваше сообщение</label>
+                        <label class="label-form" for="body">Ваше повідомлення</label>
                         <textarea class="body-feedback" required name="message" id="body"></textarea>
 
                         @error('message')
@@ -56,7 +56,7 @@
 
                     </div>
                 </div>
-                <button class="btn btn-feedback">Отправить</button>
+                <button class="btn btn-feedback">Надіслати</button>
             </form>
         </div>
     </div>

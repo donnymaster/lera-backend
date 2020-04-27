@@ -13,7 +13,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Головна</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.players') }}">Форма відповіді на питання</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Форма відповіді на питання</li>
                     </ol>
                 </nav>
             </div>

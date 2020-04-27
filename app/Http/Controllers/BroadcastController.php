@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Broadcast;
 use App\KindSport;
+use App\Services\ServiceFilterItems;
 use App\Services\ServiceValidBroadcast;
 use App\Services\ServiceYoutube;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class BroadcastController extends Controller
 {
@@ -26,9 +28,35 @@ class BroadcastController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('user-side.broadcasts');
+
+        $broadcasts = ServiceFilterItems::filter(
+            Broadcast::class,
+            $request->all(),
+            'kind_sport_id', // column name
+            'kind_sport' // with
+        )->withPath('broadcasts');
+
+        $type_sports = KindSport::all();
+        $config = ServiceFilterItems::get_config($request->all() ?? array());
+
+        // sevices
+        if($config){
+            $type_sports = $type_sports->map(function($item) use ($config){
+                foreach ($config as $key => $value) {
+                    if($item->id == $value){
+                        $item->isChecked = true;
+                        break;
+                    }else{
+                        $item->isChecked = false;
+                    }
+                }
+                return $item;
+            });
+        }
+
+        return view('user-side.broadcasts', compact('type_sports', 'broadcasts'));
     }
 
     /**
@@ -52,7 +80,7 @@ class BroadcastController extends Controller
     public function store(Request $request)
     {
 
-        $validatedData = ServiceValidBroadcast::valid($request);
+        $validatedData = ServiceValidBroadcast::valid($request, true);
 
         Broadcast::create($validatedData);
 
@@ -68,7 +96,35 @@ class BroadcastController extends Controller
      */
     public function show($id)
     {
-        //
+        $broadcast = Broadcast::where('id', '=', $id)->first();
+        $status = ServiceYoutube::getStatusBroadcast($broadcast->url_video);
+
+        if($status == null)
+        {
+            $is_valid = false;
+            return view('user-side.broadcast', compact(['is_valid', 'broadcast']));
+        }
+
+        if($status == 'в майбутньому'){
+            $is_valid = true;
+            $date = Carbon::parse($broadcast->video_start_date . ' ' . $broadcast->video_start_time);
+            $date_start = $date->isoFormat('MMMM D, YYYY hh:mm:ss');
+            $video = ServiceYoutube::getContainerVideo($broadcast->url_video)->embedHtml;
+            return view('user-side.broadcast', compact(['is_valid', 'broadcast', 'status', 'date_start', 'video']));
+        }
+        if($status == 'у прямому ефірі'){
+
+            $is_valid = true;
+            $video = ServiceYoutube::getContainerVideo($broadcast->url_video)->embedHtml;
+            return view('user-side.broadcast', compact(['is_valid', 'broadcast', 'status', 'video']));
+        }
+        if($status == 'закінчилася'){
+            $is_valid = true;
+            $status = 'закінчилася';
+            $video = ServiceYoutube::getContainerVideo($broadcast->url_video)->embedHtml;
+            return view('user-side.broadcast', compact(['is_valid', 'broadcast', 'status', 'video']));
+        }
+
     }
 
     /**
@@ -99,6 +155,7 @@ class BroadcastController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = ServiceValidBroadcast::valid($request);
+
         $broadcast = Broadcast::where('id', '=', $id)->first();
         $broadcast_name = $broadcast->name;
 

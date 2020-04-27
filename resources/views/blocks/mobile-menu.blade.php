@@ -15,16 +15,16 @@
                         </li>
                         @if (Auth::check())
                         <li>
-                            <a href="{{ route('user.index') }}">Личный аккаунт</a>
+                            <a href="{{ route('user.index') }}">Аккаунт</a>
                         </li>
                         <li>
-                            <a href="{{ route('feedback.create') }}">Связь с администрацией</a>
+                            <a href="{{ route('feedback.create') }}">Зв'язок з адміністрацією</a>
                         </li>
                         <li>
                             <a href="#"
                             onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();"
-                            >Выход</a>
+                            >Вихід</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>

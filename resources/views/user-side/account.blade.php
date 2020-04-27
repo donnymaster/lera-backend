@@ -2,7 +2,7 @@
 
 @section('title', 'Аккаунт')
 
-@section('header-custom', 'h-auto')
+@section('header-custom', 'h-auto-2')
 
 @section('script')
     <script src="{{ asset('js/tabs.js') }}"></script>
@@ -33,9 +33,6 @@
                 <div class="account-tabs--body">
                     <div class="tabs-nav__item is-active" data-tab-name="1">
                         Особисті налаштування
-                    </div>
-                    <div class="tabs-nav__item" data-tab-name="2">
-                        Повідомлення
                     </div>
                 </div>
               </div>
@@ -122,91 +119,6 @@
                                 <button class="update-btn">Оновити</button>
                                </div>
                              </form>
-                        </div>
-                        <div class="tab tab-2">
-                            <div class="account-notify-items">
-                                <div class="notify-item">
-                                    <div class="wrapped-img-delete-notify">
-                                        <img src="https://via.placeholder.com/250x150" alt="img" class="notify-img-account">
-                                        <form action="#" class="delete-notify">
-                                            <img src="assets/img/delete.png" alt="delete" class="delete-notify">
-                                        </form>
-                                    </div>
-                                    <div class="wrap-link">
-                                    <a href="/broadcast-1.html" class="notify-name line-link">
-                                        Lorem ipsum dolor
-                                   </a>
-                                   </div>
-                                   <input type="text" hidden value="" class="hide-date">
-                                   <div class="title-timer-notify">
-                                        До начала осталось
-                                   </div>
-                                   <div class="notify-end">
-                                       12:01:12
-                                   </div>
-                                   <div class="notify-desc-account">
-                                       Lorem ipsum dolor sit amet consectetur
-                                       adipisicing elit. Odio inventore
-                                       libero ut repudiandae numquam
-                                       perspiciatis quasi, nemo eius cum
-                                       nobis eveniet unde commodi beatae.
-                                   </div>
-                                </div>
-                                <div class="notify-item">
-                                    <div class="wrapped-img-delete-notify">
-                                        <img src="https://via.placeholder.com/250x150" alt="img" class="notify-img-account">
-                                        <form action="#" class="delete-notify">
-                                            <img src="assets/img/delete.png" alt="delete" class="delete-notify">
-                                        </form>
-                                    </div>
-                                    <div class="wrap-link">
-                                    <a href="/broadcast-1.html" class="notify-name line-link">
-                                        Lorem ipsum dolor
-                                   </a>
-                                   </div>
-                                   <input type="text" hidden value="" class="hide-date">
-                                   <div class="title-timer-notify">
-                                        До начала осталось
-                                   </div>
-                                   <div class="notify-end">
-                                       12:01:12
-                                   </div>
-                                   <div class="notify-desc-account">
-                                       Lorem ipsum dolor sit amet consectetur
-                                       adipisicing elit. Odio inventore
-                                       libero ut repudiandae numquam
-                                       perspiciatis quasi, nemo eius cum
-                                       nobis eveniet unde commodi beatae.
-                                   </div>
-                                </div>
-                                <div class="notify-item">
-                                    <div class="wrapped-img-delete-notify">
-                                        <img src="https://via.placeholder.com/250x150" alt="img" class="notify-img-account">
-                                        <form action="#" class="delete-notify">
-                                            <img src="assets/img/delete.png" alt="delete" class="delete-notify">
-                                        </form>
-                                    </div>
-                                    <div class="wrap-link">
-                                    <a href="/broadcast-1.html" class="notify-name line-link">
-                                        Lorem ipsum dolor
-                                   </a>
-                                   </div>
-                                   <input type="text" hidden value="" class="hide-date">
-                                   <div class="title-timer-notify">
-                                        До начала осталось
-                                   </div>
-                                   <div class="notify-end">
-                                       12:01:12
-                                   </div>
-                                   <div class="notify-desc-account">
-                                       Lorem ipsum dolor sit amet consectetur
-                                       adipisicing elit. Odio inventore
-                                       libero ut repudiandae numquam
-                                       perspiciatis quasi, nemo eius cum
-                                       nobis eveniet unde commodi beatae.
-                                   </div>
-                                </div>
-                            </div>
                         </div>
                        </div>
                    </div>

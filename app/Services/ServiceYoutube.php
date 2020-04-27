@@ -12,6 +12,8 @@ class ServiceYoutube{
     public const BROADCAST_NONE = "none";
     public const BROADCAST_UPCOMING = "upcoming";
 
+    private const API_KEY = 'AIzaSyAUaRQdaiwT83La2mYEU3NjWb4oqQw2p0k';
+
 
     public static function getStatusBroadcast($url_video){
 
@@ -37,6 +39,13 @@ class ServiceYoutube{
         }
 
         return $video_status;
+    }
+
+    public static function getContainerVideo($url_video){
+
+        $info = self::getVideoInfo(self::getId($url_video));
+
+        return $info->player;
     }
 
     public static function getCoverVideo($url_video){
@@ -122,7 +131,7 @@ class ServiceYoutube{
 
     private static function get_key(){
 
-        return env('YOUTUBE_API_KEY');
+        return self::API_KEY;
 
     }
 

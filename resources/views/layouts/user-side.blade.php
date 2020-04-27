@@ -16,6 +16,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
+    @yield('css')
 </head>
 <body>
     <header class="header @yield('header-custom')">

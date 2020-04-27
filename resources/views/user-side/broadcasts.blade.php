@@ -29,28 +29,36 @@
     <div class="two-column">
         <div class="two-column__filter">
 
-              @include('blocks.filter-broadcasts')
+            @include('blocks.filter-teams')
 
         </div>
         <div class="two-column__elements">
+            @if($broadcasts->total() != 0)
 
                 <div class="elements__header">
                     <div class="title-header">
                         Трансляції
                     </div>
 
-                    @include('blocks.sort-items')
+                </div>
+                <div class="broadcast-wrapped {{ $broadcasts->total() <= 2 ? 'j-c-e' : null }}">
+
+                    @foreach ($broadcasts as $broadcast)
+
+                        @include('blocks.broadcast-item', compact('broadcast'))
+
+                    @endforeach
 
                 </div>
-                <div class="broadcast-wrapped">
 
-                    @include('blocks.broadcast-item')
-
-                    @include('blocks.broadcast-item')
-
+                <div class="page-links">
+                    {{ $broadcasts->appends(request()->query())->links() }}
                 </div>
 
-        </div>
+            @else
+                <h1 class="not-items">Трансляції відсутні</h1>
+            @endif
+    </div>
     </div>
   </div>
 @endsection

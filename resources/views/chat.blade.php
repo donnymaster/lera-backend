@@ -4,25 +4,30 @@
 
 @section('content')
 
-<input type="text" hidden id="main" value="{{ $id }}" />
+<input type="text" hidden id="id_broadcast" value="{{ $id }}" />
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Chats</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-comment"></span> Chat
+                    </div>
+                    <div class="panel-body">
+                        <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
+                    </div>
+                    <div class="panel-footer">
 
-                <div class="panel-body">
-                    <chat-messages :messages="messages"></chat-messages>
-                </div>
-                <div class="panel-footer">
-                    <chat-form
+                        <chat-form
                         v-on:messagesent="addMessage"
                         :user="{{ Auth::user() }}"
-                    ></chat-form>
+                        ></chat-form>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 @endsection

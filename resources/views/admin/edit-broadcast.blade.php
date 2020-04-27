@@ -129,7 +129,7 @@
               </div>
 
               <div class="form-group row">
-                  <label for="datepicker-autoclose" class="col-md-3 m-t-15 text-right">Дата начала</label>
+                  <label for="datepicker-autoclose" class="col-md-3 m-t-15 text-right">Дата початку</label>
                   <div class="col-md-9 input-group">
                       @error('video_start_date')
                           <span class="invalid-feedback d-block" role="alert">
@@ -143,7 +143,7 @@
                   </div>
               </div>
               <div class="form-group row">
-                  <label for="video_start_time" class="col-md-3 m-t-15 text-right">Время начала</label>
+                  <label for="video_start_time" class="col-md-3 m-t-15 text-right">Час початку</label>
                   <div class="col-md-9">
                       @error('video_start_time')
                           <span class="invalid-feedback d-block" role="alert">

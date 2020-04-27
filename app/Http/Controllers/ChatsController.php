@@ -30,9 +30,9 @@ class ChatsController extends Controller
      *
      * @return Message
      */
-    public function fetchMessages()
+    public function fetchMessages($id)
     {
-        return Message::with('user')->get();
+        return Message::where('broadcast_id', '=', $id)->with('user')->get();
     }
 
     /**
@@ -49,7 +49,7 @@ class ChatsController extends Controller
     $message = $user->messages()->create([
         'message' => $request->input('message'),
         'user_id' => Auth::user()->id,
-        'broadcast_id' => 1
+        'broadcast_id' => $request->input('broadcast_id')
     ]);
 
     broadcast(new MessageSent($user, $message))->toOthers();
