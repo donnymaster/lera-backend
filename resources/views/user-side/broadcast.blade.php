@@ -6,9 +6,13 @@
 
 @section('content-main')
 
+@section('custom-container', 'custom')
+
+
 @if ($is_valid)
     @if ($status == 'у прямому ефірі')
         @section('css')
+        <script src="{{ asset('js/user-chat.js') }}" defer></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -57,32 +61,13 @@
                 overflow-y: scroll;
                 height: 400px;
             }
-
-            ::-webkit-scrollbar-track
-            {
-                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-                background-color: #F5F5F5;
-            }
-
-            ::-webkit-scrollbar
-            {
-                width: 12px;
-                background-color: #F5F5F5;
-            }
-
-            ::-webkit-scrollbar-thumb
-            {
-                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-                background-color: #555;
-            }
-
           </style>
         @endsection
     @endif
 @endif
 
 <div class="container">
-    <div class="account-breadcrumbs">
+    <div class="account-breadcrumbs" style="margin-bottom:10px;margin-top:20px">
         <a href="{{ route('broadcasts.index') }}" class="link-breadcrumbs">
             Трансляції
         </a>
@@ -91,6 +76,21 @@
             {{ $broadcast->name }}
         </a>
     </div>
+    <div class="wrapped-top">
+    <div class="info-teams">
+        <div class="title-into-teams">
+            Команди
+        </div>
+        <div class="broad-team">
+            <img src="{{ Storage::url($broadcast->team_1->logo) }}" alt="logo-team" class="logo-team">
+            <a style="text-decoration: none" href="{{ route('teams.show', ['team' => $broadcast->team_1->id]) }}" class="go-team line-link">{{ Str::limit($broadcast->team_1->name, 17) }}</a>
+        </div>
+        <div class="broad-team">
+            <img src="{{ Storage::url($broadcast->team_2->logo) }}" alt="logo-team" class="logo-team">
+            <a style="text-decoration: none" href="{{ route('teams.show', ['team' => $broadcast->team_2->id]) }}" class="go-team line-link">{{ Str::limit($broadcast->team_2->name, 17) }}</a>
+        </div>
+    </div>
+</div>
   </div>
 
   @if ($is_valid)
@@ -117,41 +117,91 @@
                 !!}
             </div>
         </div>
-        <div class="chat-broadcast">
-            <input type="text" hidden id="id_broadcast" value="{{ $broadcast->identifier }}" />
-            <div id="app">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <span class="glyphicon glyphicon-comment"></span> Чат
-                            </div>
-                            <div class="panel-body">
-                                <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
-                            </div>
-                            <div class="panel-footer">
+        <div class="container">
+            <div class="team-line"></div>
+        </div>
+        <div class="container">
+            {{--  --}}
+            <div id="moderator">
 
-                                <chat-form
-                                v-on:messagesent="addMessage"
-                                :user="{{ Auth::user() }}"
-                                ></chat-form>
+                        <div class="col-md-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-comment"></span> Події що відбулися в трансляції
+                                </div>
+                                <div class="panel-body">
+                                    <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
+                                </div>
+                                @if (Auth::user()->role->name_role == 'moderator')
+                                    <div class="panel-footer">
 
+                                        <chat-form
+                                        v-on:messagesent="addMessage"
+                                        :user="{{ Auth::user() }}"
+                                        ></chat-form>
+
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                    </div>
+            </div>
+            {{--  --}}
+            {{--  --}}
+            <div class="chat-broadcast">
+                <input type="text" hidden id="id_broadcast" value="{{ $broadcast->identifier }}" />
+                <input type="text" hidden id="user_id" value="{{ Auth::user()->id }}" />
+                <div id="app">
+                        <div class="col-md-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-comment"></span> Чат
+                                </div>
+                                <div class="panel-body" id="scroll-1">
+                                    <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
+                                </div>
+                                <div class="panel-footer">
+
+                                    <chat-form
+                                    v-on:messagesent="addMessage"
+                                    :user="{{ Auth::user() }}"
+                                    ></chat-form>
+
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
+        </div>
+        <div class="container">
+            <div class="team-line"></div>
+        </div>
+        <div class="container">
+            <h2 class="title-broad">
+                опис
+            </h2>
+            <div class="desc-broad">
+                {{ $broadcast->description }}
             </div>
         </div>
     </div>
     @endif
 
   @else
-    <div class="container h-100vh">
+    <div class="container">
         <h2 class="title-info">
             Трансляція була видалена
         </h2>
+    </div>
+    <div class="container">
+        <div class="team-line"></div>
+    </div>
+    <div class="container">
+        <h2 class="title-broad">
+            опис
+        </h2>
+        <div class="desc-broad" style="margin-bottom:60px">
+            {{ $broadcast->description }}
+        </div>
     </div>
   @endif
 

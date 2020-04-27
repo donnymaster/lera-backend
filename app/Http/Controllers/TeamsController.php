@@ -8,6 +8,8 @@ use App\Teams;
 use App\KindSport;
 use App\Players;
 use App\Services\ServicesAbbr;
+use App\Services\ServiceUpdateStatistic;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -105,6 +107,11 @@ class TeamsController extends Controller
     {
         $team = Teams::where('id', '=', $id)->with('kind_sport')->first();
         $players = Players::where('team_id', '=', $id)->paginate(8);
+        ServiceUpdateStatistic::update(
+            Carbon::now()->format('Y-m-d'),
+            'statistic_type_sports',
+            $team->kind_sport_id
+        );
 
         return view('user-side.team', compact('team', 'players'));
     }

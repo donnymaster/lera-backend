@@ -31,7 +31,15 @@ class ManagementController extends Controller
 
         $chart_feedback = ServiceChartFeedback::chart();
 
-      //  dd($chart_feedback);
+        if($chart_views_sport->datasets === array()){
+            $chart_views_sport = null;
+        }
+        if($chart_type_sport->datasets === array()){
+            $chart_views_sport = null;
+        }
+        if($chart_feedback->datasets === array()){
+            $chart_views_sport = null;
+        }
 
         return view('admin.index', compact('chart_views_sport', 'chart_type_sport', 'chart_feedback'));
     }
@@ -139,7 +147,7 @@ class ManagementController extends Controller
             ->editColumn('name', function($item){
                 return '
                     <a data-order="' . $item->id . '" target="_blank" href="' . route('broadcasts.show', ['broadcast' => $item->id]) . '">
-                        ' . $item->name . '
+                        ' . Str::limit($item->name, 25) . '
                     </a>
                 ';
             })

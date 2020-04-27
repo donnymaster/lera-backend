@@ -13,7 +13,7 @@ class ServiceChartFeedback{
 
         $data = DB::select('
             SELECT count(*) AS record, DATE(created_at) AS date_create FROM feedback
-            WHERE DATE(created_at) > NOW() - INTERVAL 30 DAY
+            WHERE DATE(created_at) > NOW() - INTERVAL 15 DAY
             GROUP BY date_create;
         ');
         $labels = array();

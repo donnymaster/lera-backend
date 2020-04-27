@@ -13,14 +13,14 @@ class PopularTypeSport extends Seeder
      */
     public function run()
     {
-        foreach (range(1,10) as $index) {
+        foreach (range(1,30) as $index) {
 
             foreach (range(1,7) as $value) {
 
                 StatisticTypeSport::create([
                     'visit_count' => rand(56, 134),
                     'kind_sport_id' => $value,
-                    'date' => \Carbon\CarbonImmutable::now()->add($index, 'day')
+                    'date' => \Carbon\CarbonImmutable::now()->subDays(30)->add($index, 'day')
                 ]);
 
             }

@@ -61,20 +61,6 @@
                     </div>
                 </div>
               </div>
-              <div class="about-item">
-                <img src="{{ asset('img/email-send.png') }}" alt="item_logo" class="item__logo">
-                <div class="item-info">
-                    <div class="item-title">
-                        Система сповіщення
-                    </div>
-                    <div class="item-desc">
-                        Ви можете залишити собі оповіщення про
-                        те що трансляція почнеться через
-                        5 хвилин. Дане повідомлення
-                        прийде вам на пошту.
-                    </div>
-                </div>
-              </div>
           </div>
       </div>
       <div class="container">
@@ -86,51 +72,33 @@
               Трансляції
             </h2>
             <div class="brodcasts__index-items">
-              <div class="brodcasts__index-item">
-                  <img src="https://via.placeholder.com/300x250" alt="broadcasts" class="main-img-broad">
-                  <div class="index-item__title">
-                      Назва трансляции
-                  </div>
-                  <div class="index-item__body">
-                      <div class="wrapped-body">
-                          <div class="typ-sport">Футбол</div>
-                          <div class="is-offline">Offline</div>
-                      </div>
-                      <div class="index-item__desc">
-                          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima sapiente esse architecto animi ipsa officia pariatur ratione iusto, tempora laboriosam voluptas del
-                      </div>
-                  </div>
-              </div>
-              <div class="brodcasts__index-item">
-                <img src="https://via.placeholder.com/300x250" alt="broadcasts" class="main-img-broad">
-                <div class="index-item__title">
-                    Назва трансляции
-                </div>
-                <div class="index-item__body">
-                    <div class="wrapped-body">
-                        <div class="typ-sport">Футбол</div>
-                        <div class="is-offline">Offline</div>
+
+                @forelse ($broadcasts as $item)
+                    <div class="brodcasts__index-item">
+                        <img src="{{ $item->logo }}" alt="broadcasts" class="main-img-broad">
+                        <div class="index-item__title">
+                            {{ Str::limit($item->name, 20) }}
+                        </div>
+                        <div class="index-item__body">
+                            <div class="wrapped-body">
+                                <div class="typ-sport">{{ $item->kind_sport->name_kind_sport }}</div>
+                                @if ($item->status == 'у прямому ефірі')
+                                    <div class="is-online">Online</div>
+                                @else
+                                    <div class="is-offline">Offline</div>
+                                @endif
+
+                            </div>
+                            <div class="index-item__desc">
+                                {{ Str::limit($item->description, 160) }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="index-item__desc">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima sapiente esse architecto animi ipsa officia pariatur ratione iusto, tempora laboriosam voluptas del
-                    </div>
-                </div>
-            </div>
-            <div class="brodcasts__index-item">
-                <img src="https://via.placeholder.com/300x250" alt="broadcasts" class="main-img-broad">
-                <div class="index-item__title">
-                    Назва трансляции
-                </div>
-                <div class="index-item__body">
-                    <div class="wrapped-body">
-                        <div class="typ-sport">Футбол</div>
-                        <div class="is-online">Online</div>
-                    </div>
-                    <div class="index-item__desc">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima sapiente esse architecto animi ipsa officia pariatur ratione iusto, tempora laboriosam voluptas del
-                    </div>
-                </div>
-            </div>
+                @empty
+                    <h1>Трансляції відсутні</h1>
+                @endforelse
+
+
             </div>
             <div class="container">
                 <div class="go-broadcasts">

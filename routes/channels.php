@@ -18,9 +18,15 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-// Broadcast::routes(['middleware' => ['web', 'auth']]);
-// Broadcast::channel('chat.{task_id}', \App\Broadcasting\MessagesChannel::class);
 Broadcast::channel('chat.{broadcast_id}', function ($user, $broadcast_id) {
+
     return Auth::check();
-  });
+
+});
+
+Broadcast::channel('moderator-broadcast.{broadcast_id}', function ($user, $broadcast_id) {
+
+    return Auth::check();
+
+});
 

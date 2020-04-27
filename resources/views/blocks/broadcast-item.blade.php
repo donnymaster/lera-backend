@@ -12,11 +12,12 @@
     <div class="desc_broadcast">
         <div class="desc_broadcast__head-m">
            <a class="desc_broadcast__title line-link" href="{{ route('broadcasts.show', ['broadcast' => $broadcast->id]) }}">
-           {{ $broadcast->name }} </a>
+           {{ Str::limit($broadcast->name, 32) }} </a>
             <div class="card-teams-info__city-m"> {{ $broadcast->kind_sport->name_kind_sport }}</div>
             <div class="status-noty">
                 <div class="add-noty">
                     <form action="#">
+
                     </form>
                 </div>
             </div>

@@ -12,19 +12,21 @@
             <div class="col-md-5">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <span class="glyphicon glyphicon-comment"></span> Chat
+                        <span class="glyphicon glyphicon-comment"></span> Події що відбулися в трансляції
                     </div>
                     <div class="panel-body">
                         <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
                     </div>
-                    <div class="panel-footer">
+                    @if (Auth::user()->role->name_role == 'moderator')
+                        <div class="panel-footer">
 
-                        <chat-form
-                        v-on:messagesent="addMessage"
-                        :user="{{ Auth::user() }}"
-                        ></chat-form>
+                            <chat-form
+                            v-on:messagesent="addMessage"
+                            :user="{{ Auth::user() }}"
+                            ></chat-form>
 
-                    </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

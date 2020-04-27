@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Message extends Model
+class ModeratorMessage extends Model
 {
-    protected $table = 'message';
+    protected $table = 'moderator_message';
 
     protected $fillable = ['message', 'user_id', 'broadcast_id'];
 
@@ -14,5 +14,4 @@ class Message extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }

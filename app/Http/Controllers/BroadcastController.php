@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Broadcast;
 use App\KindSport;
 use App\Services\ServiceFilterItems;
+use App\Services\ServiceUpdateStatistic;
 use App\Services\ServiceValidBroadcast;
 use App\Services\ServiceYoutube;
+use Carbon\Carbon as CarbonCarbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -96,8 +98,16 @@ class BroadcastController extends Controller
      */
     public function show($id)
     {
-        $broadcast = Broadcast::where('id', '=', $id)->first();
+        $broadcast = Broadcast::with(['team_1', 'team_2'])->where('id', '=', $id)->first();
+
+        ServiceUpdateStatistic::update(
+            Carbon::now()->format('Y-m-d'),
+            'statistic_views_sport',
+            $broadcast->kind_sport_id
+        );
+
         $status = ServiceYoutube::getStatusBroadcast($broadcast->url_video);
+
 
         if($status == null)
         {
@@ -108,7 +118,7 @@ class BroadcastController extends Controller
         if($status == 'в майбутньому'){
             $is_valid = true;
             $date = Carbon::parse($broadcast->video_start_date . ' ' . $broadcast->video_start_time);
-            $date_start = $date->isoFormat('MMMM D, YYYY hh:mm:ss');
+            $date_start = $date->isoFormat('MMMM D, YYYY HH:mm:ss');
             $video = ServiceYoutube::getContainerVideo($broadcast->url_video)->embedHtml;
             return view('user-side.broadcast', compact(['is_valid', 'broadcast', 'status', 'date_start', 'video']));
         }
@@ -120,7 +130,7 @@ class BroadcastController extends Controller
         }
         if($status == 'закінчилася'){
             $is_valid = true;
-            $status = 'закінчилася';
+            $status = 'у прямому ефірі';
             $video = ServiceYoutube::getContainerVideo($broadcast->url_video)->embedHtml;
             return view('user-side.broadcast', compact(['is_valid', 'broadcast', 'status', 'video']));
         }

@@ -15,7 +15,7 @@ class ServiceChart{
      * @return \App\Charts\ViewTypeSport
      */
 
-    public static function chart($table, $days = 30){
+    public static function chart($table, $days = 15){
 
         $chart = new ViewTypeSport;
 

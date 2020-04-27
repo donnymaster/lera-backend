@@ -6,6 +6,8 @@ use App\KindSport;
 use App\Services\ServiceFilterItems;
 use Illuminate\Http\Request;
 use App\Players;
+use App\Services\ServiceUpdateStatistic;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -108,6 +110,12 @@ class PlayersController extends Controller
     public function show($id)
     {
         $player = Players::where('id', '=', $id)->with(['kind_sport', 'teams'])->first();
+
+        ServiceUpdateStatistic::update(
+            Carbon::now()->format('Y-m-d'),
+            'statistic_type_sports',
+            $player->kind_sport_id
+        );
 
         return view('user-side.player', compact('player'));
     }

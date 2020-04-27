@@ -7,6 +7,7 @@ use App\Message;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ObsceneCensorRus;
 
 class ChatsController extends Controller
 {
@@ -44,16 +45,16 @@ class ChatsController extends Controller
     public function sendMessage(Request $request)
     {
 
-    $user = Auth::user();
+        $user = Auth::user();
 
-    $message = $user->messages()->create([
-        'message' => $request->input('message'),
-        'user_id' => Auth::user()->id,
-        'broadcast_id' => $request->input('broadcast_id')
-    ]);
+        $message = $user->messages()->create([
+            'message' => ObsceneCensorRus::getFiltered($request->input('message')),
+            'user_id' => Auth::user()->id,
+            'broadcast_id' => $request->input('broadcast_id')
+        ]);
 
-    broadcast(new MessageSent($user, $message))->toOthers();
+        broadcast(new MessageSent($user, $message))->toOthers();
 
-    return ['status' => 'Message Sent!'];
+        return ['status' => 'Message Sent!'];
     }
 }

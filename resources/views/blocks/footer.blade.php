@@ -1,5 +1,5 @@
 <footer class="footer">
-    <div class="container">
+    <div class="container @yield('custom-container')">
         <div class="nav h-70">
            <div class="nav__logo">
                <img src="{{ asset('img/logo_end.png') }}" alt="logo-site" class="logo__site">

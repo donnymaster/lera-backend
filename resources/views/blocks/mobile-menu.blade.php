@@ -17,9 +17,16 @@
                         <li>
                             <a href="{{ route('user.index') }}">Аккаунт</a>
                         </li>
+                       @if (Auth::user()->role->name_role == 'user')
                         <li>
                             <a href="{{ route('feedback.create') }}">Зв'язок з адміністрацією</a>
                         </li>
+                       @endif
+                       @if (Auth::user()->role->name_role == 'moderator')
+                        <li>
+                            <a href="{{ route('admin.index') }}">Управління сайтом</a>
+                        </li>
+                       @endif
                         <li>
                             <a href="#"
                             onclick="event.preventDefault();

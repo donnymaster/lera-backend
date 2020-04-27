@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -9,14 +10,13 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\User;
-use App\Message;
+use App\ModeratorMessage;
 
-class MessageSent implements ShouldBroadcast
+class MessageSentModerator implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
+     /**
      * User that sent the message
      *
      * @var User
@@ -26,7 +26,7 @@ class MessageSent implements ShouldBroadcast
     /**
      * Message details
      *
-     * @var Message
+     * @var ModeratorMessage
      */
     public $message;
 
@@ -35,7 +35,7 @@ class MessageSent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, Message $message)
+    public function __construct(User $user, ModeratorMessage $message)
     {
         $this->user = $user;
         $this->message = $message;
@@ -44,10 +44,10 @@ class MessageSent implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.' . $this->message->broadcast_id);
+        return new PrivateChannel('moderator-broadcast.' . $this->message->broadcast_id);
     }
 }

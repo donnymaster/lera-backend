@@ -35,7 +35,6 @@ const userChat = new Vue({
 
     created() {
         this.fetchMessages();
-        console.log(this.$refs);
     },
 
     methods: {
@@ -49,8 +48,11 @@ const userChat = new Vue({
         addMessage(message) {
             this.messages.push(message);
 
+            var messageDisplay = document.querySelector('#scroll-1');
+            messageDisplay.scrollTop = messageDisplay.scrollHeight;
+
             axios.post('/messages', message).then(response => {
-            //   console.log(response.data);
+              console.log(response.data);
             });
         }
     }
@@ -61,8 +63,13 @@ const channel = 'chat.' + document.getElementById("id_broadcast").getAttribute('
 
 Echo.private(channel)
   .listen('MessageSent', (e) => {
-    userChat.messages.push({
-      message: e.message.message,
-      user: e.user
-    });
+    var id = document.getElementById("user_id").getAttribute('value');
+    if(e.message.user_id != id){
+        userChat.messages.push({
+            message: e.message.message,
+            user: e.user
+          });
+          var messageDisplay = document.querySelector('#scroll-1');
+          messageDisplay.scrollTop = messageDisplay.scrollHeight;
+    }
 });

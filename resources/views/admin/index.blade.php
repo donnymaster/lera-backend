@@ -29,17 +29,29 @@
         <div class="card">
             <h4 class="card-title t-c p-3">Графік відвідуваності трансляцій з виду спорту за останні 30 днів</h4>
             <div>
-                {!! $chart_views_sport->container() !!}
+                @if ($chart_views_sport != null)
+                    {!! $chart_views_sport->container() !!}
+                @else
+                <h1 class="text-center">Дані відсутні</h1>
+                @endif
             </div>
             <div class="hr"></div>
             <h4 class="card-title t-c p-3">Відвідуваність всіх видів спорту за останні 30 днів</h4>
             <div>
-                {!! $chart_type_sport->container() !!}
+                @if ($chart_type_sport != null)
+                    {!! $chart_type_sport->container() !!}
+                @else
+                    <h1 class="text-center">Дані відсутні</h1>
+                @endif
             </div>
             <div class="hr"></div>
             <h4 class="card-title t-c p-3">Кількість запитань від користувачів за останні 30 днів</h4>
             <div>
-                {!! $chart_feedback->container() !!}
+                @if ($chart_feedback != null)
+                    {!! $chart_feedback->container() !!}
+                @else
+                    <h1 class="text-center">Дані відсутні</h1>
+                @endif
             </div>
         </div>
     </div>
@@ -50,7 +62,16 @@
 
 @section('custom-js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
-    {!! $chart_type_sport->script() !!}
-    {!! $chart_views_sport->script() !!}
-    {!! $chart_feedback->script() !!}
+
+    @if ($chart_type_sport != null)
+        {!! $chart_type_sport->script() !!}
+    @endif
+
+    @if ($chart_views_sport != null)
+        {!! $chart_views_sport->script() !!}
+    @endif
+
+    @if ($chart_feedback != null)
+        {!! $chart_feedback->script() !!}
+    @endif
 @endsection

@@ -13,15 +13,14 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+    @yield('css')
     <!-- Styles -->
     <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
-    @yield('css')
 </head>
 <body>
     <header class="header @yield('header-custom')">
         <nav class="wrapped__nav">
-            <div class="container">
+            <div class="container container-@yield('custom-container')">
                <div class="nav">
                   <div class="nav__logo">
                       <img src="{{ asset('img/logo_end.png') }}" alt="logo-site" class="logo__site">

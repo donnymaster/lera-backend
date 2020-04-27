@@ -56,3 +56,6 @@ Route::middleware(['auth', 'verified'])->group(function(){
 Route::get('chat/{id}', 'ChatsController@index');
 Route::get('messages/{id}', 'ChatsController@fetchMessages');
 Route::post('messages', 'ChatsController@sendMessage');
+
+Route::get('messages-moderator/{id}', 'ModeratorMessageController@fetchMessagesModerator');
+Route::post('messages-moderator', 'ModeratorMessageController@sendMessageModerator');

@@ -1,5 +1,5 @@
 <template>
-    <ul class="chat" ref="messageDisplay">
+    <ul class="chat">
         <li
             class="left clearfix"
             :class="{'border-b' : user.id == message.user.id}"
@@ -9,7 +9,7 @@
              <img v-bind:src="getLocation(message.user.avatar)" alt="User Avatar" class="img-circle">
         </span>
             <div class="chat-body clearfix">
-                <div class="header">
+                <div class="header-1">
                     <strong class="primary-font">
                         {{ message.user.nick }}
                     </strong>

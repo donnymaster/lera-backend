@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Message extends Migration
+class ModeratorMessage extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class Message extends Migration
      */
     public function up()
     {
-        Schema::create('message', function (Blueprint $table) {
+        Schema::create('moderator_message', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('message');
             $table->unsignedBigInteger('user_id');
@@ -32,6 +32,6 @@ class Message extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('message');
+        Schema::dropIfExists('moderator_message');
     }
 }
