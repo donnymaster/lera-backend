@@ -74,7 +74,7 @@
                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic admin-logo" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="back-fon"></div>
-                                <img src="{{ Auth::user()->avatar() }}" alt="user" class="rounded-circle admin-logo" width="31">
+                                <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="user" class="rounded-circle admin-logo" width="31">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="{{ route('root') }}">Перейти на сайт</a>

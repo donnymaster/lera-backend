@@ -28,7 +28,9 @@
 
     methods: {
         getLocation(link){
-            return '../' + link;
+            var ava = link.split('/')[2];
+
+            return '../storage/avatar/' + ava;
         }
     },
     computed: {

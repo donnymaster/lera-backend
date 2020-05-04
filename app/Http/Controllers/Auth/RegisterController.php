@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -70,11 +71,12 @@ class RegisterController extends Controller
         $is_avatar = isset($data['user-castom-img']);
 
         if($is_avatar){
-            $avatar_url = $data['user-castom-img']->store('storage/avatars');
+            // $avatar_url = $data['user-castom-img']->store('storage/avatars');
+            $avatar_url = Storage::putFile('public/avatar', $data['user-castom-img']);
         }elseif(isset($data['default_image'])){
-            $default_avatar = "storage/avatars/" . $data['default_image'] . ".png";
+            $default_avatar = "public/avatar/" . $data['default_image'] . ".png";
         }else{
-            $default_avatar = rand(1, 10) > 5 ? "storage/avatars/men.png" : "storage/avatars/girl.png";
+            $default_avatar = rand(1, 10) > 5 ? "public/avatar/men.png" : "public/avatar/girl.png";
         }
 
         return User::create([

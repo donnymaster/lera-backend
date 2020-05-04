@@ -1,5 +1,5 @@
 <div class="user-logo">
-    <img class="user-logo-img" src="{{ Auth::user()->avatar() }}" alt="user-logo">
+    <img class="user-logo-img" src="{{ Storage::url(Auth::user()->avatar) }}" alt="user-logo">
     <div class="user-menu d-none">
         <ul class="menu-items">
             <li class="menu-item">

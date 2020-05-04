@@ -40,6 +40,7 @@ class ManagementController extends Controller
         if($chart_feedback->datasets === array()){
             $chart_views_sport = null;
         }
+      //  dd($chart_feedback, $chart_type_sport, $chart_views_sport);
 
         return view('admin.index', compact('chart_views_sport', 'chart_type_sport', 'chart_feedback'));
     }
