@@ -23,8 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('feedback', 'FeedbackController');
 
-Route::middleware(['auth', 'verified'])->group(function(){
-
     Route::resource('broadcasts', 'BroadcastController');
 
     Route::resource('players', 'PlayersController');
@@ -33,7 +31,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::resource('user', 'UserController');
 
-    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
+    Route::group([
+        'prefix' => 'admin', 
+        'middleware' => 'admin', 
+        'middleware' => 'auth',
+        'middleware' => 'verified'], function () {
 
         Route::get('index', 'ManagementController@index')->name('admin.index');
         Route::get('teams', 'ManagementController@teams')->name('admin.teams');
@@ -49,9 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::post('feedbacks', 'ManagementController@answerQuestion')->name('admin.answerQuestion');
 
         Route::get('autocomplete-teams', 'ManagementController@autocompleteTeams')->name('admin.complete.teams');
+        Route::get('teams-all-teams', 'ManagementController@allTeams')->name('admin.complete.players');
+        Route::get('teams-all-init', 'ManagementController@initUpdatePlayers')->name('admin.complete.all-teams-init');
     });
-
-});
 
 Route::get('chat/{id}', 'ChatsController@index');
 Route::get('messages/{id}', 'ChatsController@fetchMessages');

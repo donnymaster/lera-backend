@@ -19,14 +19,12 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('chat.{broadcast_id}', function ($user, $broadcast_id) {
-
-    return Auth::check();
-
+    return true;
 });
 
 Broadcast::channel('moderator-broadcast.{broadcast_id}', function ($user, $broadcast_id) {
 
-    return Auth::check();
+    return true;
 
 });
 

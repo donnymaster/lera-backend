@@ -23,7 +23,9 @@
             <div class="container container-@yield('custom-container')">
                <div class="nav">
                   <div class="nav__logo">
-                      <img src="{{ asset('img/logo_end.png') }}" alt="logo-site" class="logo__site">
+                        <a href="{{ route('root') }}">
+                          <img src="{{ asset('img/logo_end.png') }}" alt="logo-site" class="logo__site">
+                        </a>
                   </div>
 
                   @include('blocks.desktop-menu')
@@ -44,7 +46,9 @@
 
     </header>
 
-    @yield('content-main')
+    <div class="wrapped-main-content">
+        @yield('content-main')
+    </div>
 
     @include('blocks.footer')
 
@@ -60,6 +64,7 @@
     <script src="{{ asset('js/mobile-menu.js') }}"></script>
 
     @yield('script')
+    @yield('players_in_broadcast')
 
 </body>
 

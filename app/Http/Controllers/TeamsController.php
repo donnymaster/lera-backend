@@ -156,7 +156,7 @@ class TeamsController extends Controller
 
         $team->update($validatedData);
 
-        return back()->with('update', 'Гравець  ' . $old_name . ' оновлений');
+        return back()->with('update', 'Команда  ' . $old_name . ' оновлений');
     }
 
     /**

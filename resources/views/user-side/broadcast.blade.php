@@ -8,12 +8,13 @@
 
 @section('custom-container', 'custom')
 
-
 @if ($is_valid)
     @if ($status == 'у прямому ефірі')
         @section('css')
+        @if (Auth::check())
         <script src="{{ asset('js/user-chat.js') }}" defer></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
+        @endif
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <style>
@@ -83,11 +84,61 @@
         </div>
         <div class="broad-team">
             <img src="{{ Storage::url($broadcast->team_1->logo) }}" alt="logo-team" class="logo-team">
-            <a style="text-decoration: none" href="{{ route('teams.show', ['team' => $broadcast->team_1->id]) }}" class="go-team line-link">{{ Str::limit($broadcast->team_1->name, 17) }}</a>
+            <div class="wrap">
+            <a style="text-decoration: none" 
+               href="{{ route('teams.show', ['team' => $broadcast->team_1->id]) }}" 
+               class="go-team line-link">{{ Str::limit($broadcast->team_1->name, 17) }}
+            </a>
+            <img src="{{ asset('img/custom-select.png') }}" alt="show/hide" id="btn-team-1">
+            <div class="block-team-1">
+                <div class="title-block">
+                    Гравці в команді
+                </div>
+                @php
+                    $team_1 = json_decode($broadcast->players_in_broadcast->team_1_players, true) ?? array();
+                @endphp
+                @forelse ($team_1 as $item)
+                    <div class="player-item-team">
+                        <a class="lenk-player line-link" href="{{ route('players.show', ['player' => $item['id']]) }}">
+                            {{ Str::limit($item['name'] . ' ' . $item['surname'], 30) }}
+                        </a>
+                    </div>
+                @empty
+                    <div class="player-item-team">
+                        Гравці відсутні
+                    </div>
+                @endforelse
+            </div>
+            </div>
         </div>
         <div class="broad-team">
             <img src="{{ Storage::url($broadcast->team_2->logo) }}" alt="logo-team" class="logo-team">
-            <a style="text-decoration: none" href="{{ route('teams.show', ['team' => $broadcast->team_2->id]) }}" class="go-team line-link">{{ Str::limit($broadcast->team_2->name, 17) }}</a>
+            <div class="wrap">
+            <a style="text-decoration: none" 
+               href="{{ route('teams.show', ['team' => $broadcast->team_2->id]) }}" 
+               class="go-team line-link">{{ Str::limit($broadcast->team_2->name, 17) }}
+            </a>
+            <img src="{{ asset('img/custom-select.png') }}" alt="show/hide" id="btn-team-2">
+            <div class="block-team-2">
+                <div class="title-block">
+                    Гравці в команді
+                </div>
+                @php
+                    $team_2 = json_decode($broadcast->players_in_broadcast->team_2_players, true) ?? array();
+                @endphp
+                @forelse ($team_2 as $item)
+                    <div class="player-item-team">
+                        <a class="lenk-player line-link" href="{{ route('players.show', ['player' => $item['id']]) }}">
+                            {{ Str::limit($item['name'] . ' ' . $item['surname'], 30) }}
+                        </a>
+                    </div>
+                @empty
+                    <div class="player-item-team">
+                        Гравці відсутні
+                    </div>
+                @endforelse
+            </div>
+            </div>
         </div>
     </div>
 </div>
@@ -120,28 +171,28 @@
         <div class="container">
             <div class="team-line"></div>
         </div>
+        @if (Auth::check())
         <div class="container">
             {{--  --}}
             <div id="moderator">
-
                         <div class="col-md-6">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <span class="glyphicon glyphicon-comment"></span> Події що відбулися в трансляції
                                 </div>
                                 <div class="panel-body">
-                                    <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
+                                        <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
                                 </div>
-                                @if (Auth::user()->role->name_role == 'moderator')
-                                    <div class="panel-footer">
+                                    @if (Auth::user()->role->name_role == 'moderator')
+                                        <div class="panel-footer">
 
-                                        <chat-form
-                                        v-on:messagesent="addMessage"
-                                        :user="{{ Auth::user() }}"
-                                        ></chat-form>
+                                            <chat-form
+                                            v-on:messagesent="addMessage"
+                                            :user="{{ Auth::user() }}"
+                                            ></chat-form>
 
-                                    </div>
-                                @endif
+                                        </div>
+                                    @endif
                             </div>
                         </div>
             </div>
@@ -156,25 +207,28 @@
                                 <div class="panel-heading">
                                     <span class="glyphicon glyphicon-comment"></span> Чат
                                 </div>
-                                <div class="panel-body" id="scroll-1">
+                                <div class="panel-body" id="scroll-1">                   
                                     <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
                                 </div>
-                                <div class="panel-footer">
+                                    <div class="panel-footer">
 
-                                    <chat-form
-                                    v-on:messagesent="addMessage"
-                                    :user="{{ Auth::user() }}"
-                                    ></chat-form>
+                                        <chat-form
+                                        v-on:messagesent="addMessage"
+                                        :user="{{ Auth::user() }}"
+                                        ></chat-form>
 
-                                </div>
+                                    </div>
                             </div>
                         </div>
                 </div>
             </div>
         </div>
+        @endif
+        @if (Auth::check())
         <div class="container">
             <div class="team-line"></div>
         </div>
+        @endif
         <div class="container">
             <h2 class="title-broad">
                 опис
@@ -229,11 +283,13 @@
         @endsection
     @endif
 @endif
-
-@if ($is_valid)
-    @if ($status == 'у прямому ефірі')
-        @section('script')
-
-        @endsection
-    @endif
-@endif
+@section('players_in_broadcast')
+        <script>
+            $('#btn-team-1').on('click', function(){
+                $('.block-team-1').toggleClass('show-team');
+            });
+            $('#btn-team-2').on('click', function(){
+                $('.block-team-2').toggleClass('show-team');
+            });
+        </script>
+@endsection

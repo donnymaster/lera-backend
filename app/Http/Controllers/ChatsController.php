@@ -11,11 +11,6 @@ use App\Services\ObsceneCensorRus;
 
 class ChatsController extends Controller
 {
-        public function __construct()
-    {
-    $this->middleware('auth');
-    }
-
     /**
      * Show chats
      *

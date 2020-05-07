@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Broadcast;
 use App\KindSport;
+use App\Services\ServiceAddBroadcastPlayers;
 use App\Services\ServiceFilterItems;
 use App\Services\ServiceUpdateStatistic;
 use App\Services\ServiceValidBroadcast;
@@ -82,8 +83,11 @@ class BroadcastController extends Controller
     public function store(Request $request)
     {
 
+        
         $validatedData = ServiceValidBroadcast::valid($request, true);
 
+        $players_id = ServiceAddBroadcastPlayers::add($request->all());
+        $validatedData['json_players'] = $players_id;
         Broadcast::create($validatedData);
 
         return back()->with('make', 'Трансляція була додана');
@@ -98,8 +102,9 @@ class BroadcastController extends Controller
      */
     public function show($id)
     {
-        $broadcast = Broadcast::with(['team_1', 'team_2'])->where('id', '=', $id)->first();
+        $broadcast = Broadcast::with(['team_1', 'team_2', 'players_in_broadcast'])->where('id', '=', $id)->first();
 
+        
         ServiceUpdateStatistic::update(
             Carbon::now()->format('Y-m-d'),
             'statistic_views_sport',
@@ -168,6 +173,8 @@ class BroadcastController extends Controller
 
         $broadcast = Broadcast::where('id', '=', $id)->first();
         $broadcast_name = $broadcast->name;
+
+        ServiceAddBroadcastPlayers::update($request->all(), $broadcast->json_players);
 
         $broadcast->update($validatedData);
 

@@ -13,6 +13,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FeedbackMail;
+use App\PlayerInBroadcast;
 use App\Services\ServiceChart;
 use App\Services\ServiceChartFeedback;
 
@@ -25,21 +26,21 @@ class ManagementController extends Controller
      */
     public function index()
     {
-        $chart_views_sport = ServiceChart::chart('statistic_views_sport');
+       $chart_views_sport = ServiceChart::chart('statistic_views_sport');
 
-        $chart_type_sport = ServiceChart::chart('statistic_type_sports');
+       $chart_type_sport = ServiceChart::chart('statistic_type_sports');
 
         $chart_feedback = ServiceChartFeedback::chart();
 
-        if($chart_views_sport->datasets === array()){
+       if($chart_views_sport->datasets === array()){
             $chart_views_sport = null;
-        }
-        if($chart_type_sport->datasets === array()){
-            $chart_views_sport = null;
-        }
-        if($chart_feedback->datasets === array()){
-            $chart_views_sport = null;
-        }
+       }
+       if($chart_type_sport->datasets === array()){
+            $chart_type_sport = null;
+       }
+       if($chart_feedback->datasets === array()){
+            $chart_feedback = null;
+       }
       //  dd($chart_feedback, $chart_type_sport, $chart_views_sport);
 
         return view('admin.index', compact('chart_views_sport', 'chart_type_sport', 'chart_feedback'));
@@ -253,6 +254,24 @@ class ManagementController extends Controller
 
         $data = Teams::select("name", "id")
                     ->where("name","LIKE","%{$request->input('query')}%")
+                    ->get();
+
+        return response()->json($data);
+    }
+
+    public function allTeams(Request $request){
+        
+        $data = Players::select("name", "surname", "id")
+                    ->where("team_id", "=", "{$request->input('id')}")
+                    ->get();
+
+        return response()->json($data);
+    }
+
+    public function initUpdatePlayers(Request $request){
+        
+        $data = PlayerInBroadcast::select("*")
+                    ->where("id", "=", "{$request->input('id')}")
                     ->get();
 
         return response()->json($data);

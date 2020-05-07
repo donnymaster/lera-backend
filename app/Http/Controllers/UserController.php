@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage; 
 
 class UserController extends Controller
 {
@@ -64,18 +64,18 @@ class UserController extends Controller
         $validatedData['password'] = Hash::make($validatedData['password']);
 
         if($request->input('default_image') == 'men' || $request->input('default_image') == 'girl'){
-            $validatedData['avatar'] = 'storage/avatars/' . $request->input('default_image') . '.png';
+            $validatedData['avatar'] = 'public/avatar/' . $request->input('default_image') . '.png';
         }
 
         if($request['img'] != null){
             $user_avatar = User::where('id', '=', Auth::user()->id)->first()->avatar;
-            if($user_avatar != 'storage/avatars/men.png' || $user_avatar != '/avatars/girl.png'){
-                Storage::delete('public/avatars/' . explode('/', $user_avatar)[2]);
-                $path = Storage::putFile('public/avatars', $request['img']);
-                $validatedData['avatar'] = 'storage/avatars/' . explode('/', $path)[2];
+            if($user_avatar != 'public/avatar/men.png' || $user_avatar != 'public/avatar/girl.png'){
+                Storage::delete('public/avatar/' . explode('/', $user_avatar)[2]);
+                $path = Storage::putFile('public/avatar', $request['img']);
+                $validatedData['avatar'] = 'public/avatar/' . explode('/', $path)[2];
             }else{
-                $path = Storage::putFile('public/avatars', $request['img']);
-                $validatedData['avatar'] = 'storage/avatars/' . explode('/', $path)[2];
+                $path = Storage::putFile('public/avatar', $request['img']);
+                $validatedData['avatar'] = 'public/avatar/' . explode('/', $path)[2];
             }
         }
 

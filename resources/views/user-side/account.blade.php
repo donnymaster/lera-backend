@@ -85,24 +85,24 @@
                                     <div class="register__avatar-images">
 
                                         @if (
-                                            $user_info->avatar != 'storage/avatars/men.png'
-                                         && $user_info->avatar != 'storage/avatars/girl.png'
+                                            $user_info->avatar != 'public/avatar/men.png'
+                                         && $user_info->avatar != 'public/avatar/girl.png'
                                         )
                                             <div class="register__avatar-image-item
-                                            {{$user_info->avatar == 'storage/avatars/men.png' ? 'register__avatar-image-item--line' : null}}
+                                            {{$user_info->avatar == 'public/avatar/men.png' ? 'register__avatar-image-item--line' : null}}
                                             ">
-                                                <img src="{{ Auth::user()->avatar() }}" alt="men" id="old" class="register__avatar-image">
+                                                <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="men" id="old" class="register__avatar-image">
                                             </div>
                                         @endif
 
                                         <div class="register__avatar-image-item register__avatar-image-item--men
-                                        {{$user_info->avatar == 'storage/avatars/men.png' ? 'register__avatar-image-item--line' : null}}
+                                        {{$user_info->avatar == 'public/avatar/men.png' ? 'register__avatar-image-item--line' : null}}
                                         ">
                                             <img src="{{ asset('img/men.png') }}" alt="men" id="men" class="register__avatar-image">
                                         </div>
 
                                         <div class="register__avatar-image-item register__avatar-image-item--girl
-                                        {{$user_info->avatar == 'storage/avatars/girl.png' ? 'register__avatar-image-item--line' : null}}
+                                        {{$user_info->avatar == 'public/avatar/girl.png' ? 'register__avatar-image-item--line' : null}}
                                         ">
                                             <img src="{{ asset('img/girl.png') }}" alt="girl" id="girl" class="register__avatar-image">
                                         </div>

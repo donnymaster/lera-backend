@@ -12,7 +12,15 @@
         </div>
         <div class="card-teams-body">
             <div class="card-teams-title">
-                {{ $item->name }}
+                @isset($item->abbr)
+                    {{ $item->name }}
+                @endisset
+                {{-- @isset($item->surname)
+                    {{ $item->surname }} <span class="year_player">{{ $item->date_birth }}</span>
+                @endisset --}}
+                @isset($item->surname)
+                    {{ $item->surname }} <span class="year_player">{{ \Carbon\Carbon::now()->diffInYears(\Carbon\Carbon::parse($item->date_birth)) }} років</span>
+                @endisset
             </div>
             <div class="card-teams-info">
                 <div class="card-teams-info__city">
